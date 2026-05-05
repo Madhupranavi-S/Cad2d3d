@@ -1,0 +1,185 @@
+\section{Literature review}
+\label{sec:related}
+
+Accurate kinematic and dynamic modeling of marine vessels has been 
+a central concern in naval architecture and marine control systems 
+for several decades. The Nomoto model, introduced in its first- and 
+second-order forms, remains one of the most widely adopted 
+representations for describing the yaw dynamics of surface ships 
+under helm input~\cite{nomoto}. More comprehensive 
+representations, including the three-degree-of-freedom maneuvering 
+models formulated by Fossen, account for coupled surge, sway, and 
+yaw dynamics and have become standard references in marine control 
+literature~\cite{fossen}. Bicycle kinematic and unicycle 
+models, originally developed for wheeled mobile robots, have also 
+found application in USV guidance owing to their computational 
+simplicity and suitability for low-speed maneuvering 
+scenarios~\cite{structural}, ~\cite{dubin}. Despite the availability of 
+these well-established model families, determining which model best 
+governs a specific deployed vessel remains a largely unresolved 
+problem in practice.
+
+Classical system identification approaches address this through 
+dedicated sea trials and regression-based parameter fitting to 
+hydrodynamic databases~\cite{yoon2003identification, alexandersson2022system}. More recent efforts have 
+explored recursive least squares and extended Kalman filter 
+formulations for online parameter estimation~\cite{voss2004nonlinear}, as well as 
+grey-box methods that blend physical structure with data-driven 
+parameter learning~\cite{chen2022grey, herrero2012two}. While effective 
+within their respective settings, all of these approaches 
+presuppose knowledge of the governing model structure and require 
+either explicit control input measurements or dedicated onboard 
+sensing hardware. This limits their applicability in scenarios 
+where only pose observations of the vessel are available and the 
+underlying model class itself is unknown. Furthermore, physics-based 
+identification methods require extensive hydrodynamic testing and 
+model-specific parameter fitting — involving captive model tests 
+with towing tanks, rotating arms, and planar motion mechanisms — 
+which ties identified parameters to a specific vessel's geometry 
+and actuator configuration, fundamentally limiting generalizability 
+across vessel types~\cite{chen2022grey}. Critically, the overwhelming 
+majority of these approaches operate within a dynamic modeling 
+paradigm, requiring force measurements, inertial quantities, or 
+hydrodynamic coefficients that are not directly observable from 
+pose trajectories alone. The present work departs from this 
+paradigm entirely by adopting a kinematic perspective, where 
+classification is performed exclusively from observable pose and 
+velocity quantities derived from the trajectory, without requiring 
+any dynamic state information.
+
+The emergence of machine learning has opened alternative avenues 
+for identifying dynamical systems directly from state trajectory 
+data. Sparse identification of nonlinear dynamics (SINDy), 
+originally proposed by Brunton et al., demonstrated that governing 
+equations can be recovered from trajectory observations via sparse 
+regression over candidate function 
+libraries~\cite{brunton2016discovering}. While powerful for equation 
+discovery, the basic SINDy framework is sensitive to noise and 
+requires accurate derivative information from clean measurements, 
+limiting its reliability under real-world conditions. Recent 
+extensions such as iNeural-SINDy address these limitations by 
+combining neural networks with integral-form constraints and 
+automatic differentiation to enable robust equation discovery from 
+noisy and scarce data~\cite{forootani2025robust}. However, despite 
+these advances, such symbolic approaches aim to recover governing 
+equations rather than discriminate between a discrete set of 
+candidate model classes from observed trajectories alone — a 
+fundamentally different problem that remains unaddressed.
+
+Classification of dynamical systems as a supervised learning 
+problem has received growing attention in robotics and autonomous 
+systems. Prior work has shown that motion response signatures 
+embedded in state trajectory data encode sufficient discriminative 
+information to identify system behavior without dedicated sensing 
+modalities~\cite{sebastian2019support, sermanet2018time}. 
+Analogous ideas have been explored in fault detection and 
+structural health monitoring, where convolutional and recurrent 
+architectures have been applied to classify dynamical system 
+behavior directly from time-series 
+measurements~\cite{xu2025research, zhao2017convolutional}. These 
+works collectively support the hypothesis that trajectory 
+observations alone can discriminate among distinct model classes, 
+provided the feature representation is carefully designed to 
+capture intrinsic dynamic signatures rather than superficial path 
+geometry.
+
+In the maritime domain, Automatic Identification System (AIS) 
+data has been widely used for vessel classification. It is 
+important to note that AIS encompasses a rich multi-modal data 
+stream — beyond kinematic fields such as position, speed over 
+ground, course, and heading, it also includes static vessel 
+attributes such as ship dimensions, draft, vessel type codes, 
+and MMSI identifiers, as well as voyage-related information. 
+This breadth of information has enabled classification 
+frameworks that fuse trajectory-derived behavioral features with 
+static geometric metadata to distinguish vessel categories, using 
+classifiers ranging from logistic regression and naive Bayes to 
+ensemble methods and support vector 
+machines~\cite{sheng2018research, zhou2019ship, 
+huang2023ship}. While these works confirm that kinematic 
+signatures embedded in vessel movement data carry discriminative 
+value, they differ fundamentally from the present work in two 
+respects. First, they rely on aggregated statistical features 
+extracted from long-horizon AIS records combined with static 
+vessel metadata, rather than operating on short-horizon pose 
+sequences derived purely from position and heading observations. 
+Second, and more critically, their classification objective is 
+vessel type or operational behavior — not the underlying kinematic 
+motion model governing the vessel's dynamics. Identifying whether 
+a vessel is a fishing boat or a cargo ship is an entirely 
+different problem from identifying whether its motion is governed 
+by a Nomoto, Unicycle, Three-DOF, or Bicycle Kinematic model. 
+No prior work in the maritime domain has formulated the latter as 
+a data-driven classification problem solvable from pose 
+observations alone.
+
+For sequential and time-series data, recurrent architectures such 
+as Long Short-Term Memory (LSTM) networks have been widely adopted 
+owing to their capacity to model long-range temporal 
+dependencies~\cite{lstm}. However, LSTMs suffer 
+from vanishing gradients over long sequences and are inherently 
+sequential in computation, which limits training efficiency. 
+Temporal Convolutional Networks (TCNs), introduced by Bai et al., 
+address these shortcomings through dilated causal convolutions 
+with residual connections, achieving large receptive fields while 
+remaining fully parallelizable~\cite{bai2018empirical}. TCNs have 
+demonstrated competitive or superior performance relative to 
+recurrent architectures across sequence modeling benchmarks and 
+have been applied to trajectory 
+prediction~\cite{nikhil2018convolutional} and motion 
+classification tasks~\cite{lea2017temporal}. Extensions combining 
+TCN with Transformer attention mechanisms have further demonstrated 
+advantages over recurrent architectures for early and accurate 
+time-series classification~\cite{chen2022early}, reinforcing the suitability of convolutional temporal encoders for 
+sequential classification tasks. Their ability to capture 
+multi-scale temporal structure through exponentially increasing 
+dilation factors makes TCNs particularly well-suited for encoding 
+the dynamic signatures of vessel maneuvers across different time 
+horizons.
+
+Beyond supervised classification, contrastive learning has emerged 
+as a powerful paradigm for learning structured embedding spaces 
+that generalize across distributional variations. Self-supervised 
+frameworks such as SimCLR and MoCo learn representations by 
+contrasting augmented views of the same 
+sample~\cite{he2020momentum, chen2020simple}, while supervised 
+contrastive learning, proposed by Khosla et al., extends this to 
+the fully labeled setting by treating all same-class samples as 
+positives, enforcing simultaneous intra-class compactness and 
+inter-class separation~\cite{khosla2020supervised}. This approach 
+produces more robust and transferable representations compared to 
+cross-entropy training alone, particularly under distribution 
+shift conditions. In the time-series domain, contrastive 
+objectives have been applied to learn invariant representations 
+across sensor modalities~\cite{eldele2021time}, demonstrating 
+robustness to input variation that is directly relevant to the 
+maneuver diversity encountered in vessel trajectory data.
+
+Taken together, the reviewed literature reveals a clear and 
+unaddressed gap at the intersection of marine motion modeling, 
+trajectory-based classification, and deep sequence learning. 
+Existing ship identification methods operate predominantly within 
+a dynamic modeling paradigm, requiring force measurements, 
+hydrodynamic coefficients, explicit control inputs, or dedicated 
+onboard sensing — none of which are available when only pose 
+observations of the vessel exist. AIS-based maritime 
+classification methods rely on multi-modal data streams combining 
+static vessel metadata with long-horizon behavioral aggregates, 
+and address vessel type or operational behavior rather than 
+kinematic model identity. Symbolic data-driven approaches such as 
+SINDy target equation discovery rather than discrete model 
+classification. General dynamical system classification methods 
+in robotics have not been extended to the problem of 
+discriminating among candidate kinematic models of marine vessels 
+from short-horizon pose-only trajectory observations. 
+Furthermore, while TCN architectures and supervised contrastive 
+learning have individually demonstrated strong performance in 
+sequence modeling and representation learning, their combination 
+for kinematic motion model classification in the maritime domain 
+has not been previously explored. This work directly addresses 
+all of these gaps by proposing a unified framework that derives 
+dynamics-oriented kinematic features from raw pose trajectories 
+and trains a TCN encoder under a joint contrastive and 
+cross-entropy objective to classify the ego ship's motion model 
+without access to control inputs, onboard sensors, dynamic force 
+measurements, or prior model structure assumptions.
