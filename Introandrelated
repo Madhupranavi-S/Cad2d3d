@@ -1,3 +1,24 @@
+[22] N. Nikhil and B. Tran Morris, “Convolutional neural network for
+trajectory prediction,” in Proceedings of the European conference on
+computer vision (ECCV) workshops, pp. 0–0, 2018.
+[23] C. Lea, M. D. Flynn, R. Vidal, A. Reiter, and G. D. Hager, “Tempo-
+ral convolutional networks for action segmentation and detection,” in
+proceedings of the IEEE Conference on Computer Vision and Pattern
+Recognition, pp. 156–165, 2017.
+[24] H. Chen, A. Tian, Y. Zhang, and Y. Liu, “Early time series classification
+using tcn-transformer,” in 2022 IEEE 4th International Conference on
+Civil Aviation Safety and Information Technology (ICCASIT), pp. 1079–
+1082, IEEE, 2022.
+[25] K. He, H. Fan, Y. Wu, S. Xie, and R. Girshick, “Momentum contrast
+for unsupervised visual representation learning,” in Proceedings of the
+IEEE/CVF conference on computer vision and pattern recognition,
+pp. 9729–9738, 2020.
+[26] T. Chen, S. Kornblith, M. Norouzi, and G. Hinton, “A simple framework
+for contrastive learning of visual representations,” in International
+conference on machine learning, pp. 1597–1607, PmLR, 2020.
+[27] E. Eldele, M. Ragab, Z. Chen, M. Wu, C. K. Kwoh, X. Li, and C. Guan,
+“Time-series representation learning via temporal and contextual con-
+trasting,” arXiv preprint arXiv:2106.14112, 2
 \section{Introduction}
 Autonomous navigation of marine vessels has witnessed significant progress in recent years, driven by advances in control theory, sensor fusion, and data-driven decision-making~\cite{}--\cite{}. This is reflected in the growing deployment of unmanned surface vehicles (USVs) for applications ranging from ocean surveying and environmental monitoring to maritime search and rescue and autonomous cargo transport. Despite these developments, achieving robust autonomy in open and confined waterways remains a challenging problem, particularly in the presence of environmental disturbances such as wind, waves, and ocean currents. A foundational requirement for any autonomous marine system is an accurate kinematic model of the vessel, as high-level planning, motion prediction, and feedback control all depend critically on the fidelity of this underlying representation.
 
