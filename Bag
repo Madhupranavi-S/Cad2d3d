@@ -1,0 +1,458 @@
+# Install deps once
+pip3 install pandas matplotlib numpy
+
+# Source ROS 2 (required for message deserialization)
+source /opt/ros/humble/setup.bash   # or foxy / iron
+
+# Step 1: First, peek at topics in one bag to confirm your topic name
+python3 ros2_bag_extractor.py --bag ~/bags/rosbag2_run_01 --list
+
+# Step 2: Process ALL 25 bags at once
+python3 ros2_bag_extractor.py --batch ~/bags/ --out ~/extracted/
+
+# Step 3 (optional): If your pose topic isn't /odom, specify it
+python3 ros2_bag_extractor.py --batch ~/bags/ --topic /your_topic --out ~/extracted/
+
+
+"""
+ROS 2 Bag → CSV Extractor  (x, y, heading / yaw)
+==================================================
+Handles 3 folder types automatically:
+  Type A — proper bag (metadata.yaml + .db3)
+  Type B — dump bag   (only .db3, no metadata)
+  Type C — folder of multiple .db3 splits
+
+Batch mode processes all 25 folders at once.
+
+Usage:
+    # Single bag
+    python3 ros2_bag_extractor.py --bag /path/to/one_bag_folder
+
+    # Batch — point at the PARENT folder containing all 25 bags
+    python3 ros2_bag_extractor.py --batch /path/to/all_bags/
+
+    # Just see what topics are in a bag (good first step)
+    python3 ros2_bag_extractor.py --bag /path/to/bag --list
+
+    # Demo with synthetic data (no bag needed)
+    python3 ros2_bag_extractor.py --demo
+"""
+
+import os
+import sys
+import argparse
+import math
+import sqlite3
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+
+# ── Try ROS 2 libraries (optional — falls back to demo / SQLite-only mode) ────
+try:
+    from rclpy.serialization import deserialize_message
+    from rosidl_runtime_py.utilities import get_message
+    ROS2_AVAILABLE = True
+except ImportError:
+    ROS2_AVAILABLE = False
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1.  BAG / FOLDER DETECTION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def find_all_db3(folder: str) -> list[str]:
+    """Return sorted list of ALL .db3 files in folder."""
+    files = [
+        os.path.join(folder, f)
+        for f in sorted(os.listdir(folder))
+        if f.endswith(".db3")
+    ]
+    return files
+
+
+def has_metadata(folder: str) -> bool:
+    return os.path.isfile(os.path.join(folder, "metadata.yaml"))
+
+
+def classify_folder(folder: str) -> str:
+    """
+    Returns:
+      'proper'  — has metadata.yaml + .db3   (Type A)
+      'dump'    — has .db3 only              (Type B / C)
+      'empty'   — no .db3 at all
+    """
+    db3s = find_all_db3(folder)
+    if not db3s:
+        return "empty"
+    return "proper" if has_metadata(folder) else "dump"
+
+
+def discover_bag_folders(parent: str) -> list[str]:
+    """
+    Scan a parent directory and return all sub-folders that contain at least
+    one .db3 file (handles both proper bags and dump bags).
+    """
+    bags = []
+    for entry in sorted(os.listdir(parent)):
+        full = os.path.join(parent, entry)
+        if os.path.isdir(full) and find_all_db3(full):
+            bags.append(full)
+    return bags
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 2.  TOPIC INSPECTION  (works for both proper and dump bags)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def list_topics_in_db3(db_file: str) -> list[tuple]:
+    conn   = sqlite3.connect(db_file)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, type FROM topics")
+    topics = cursor.fetchall()
+    conn.close()
+    return topics
+
+
+def list_topics(bag_folder: str, verbose: bool = True) -> list[tuple]:
+    """Print and return all topics across all .db3 files in the bag folder."""
+    all_topics: dict[str, tuple] = {}
+    for db_file in find_all_db3(bag_folder):
+        for tid, name, typ in list_topics_in_db3(db_file):
+            all_topics[name] = (tid, name, typ)
+
+    topics = list(all_topics.values())
+    kind   = classify_folder(bag_folder)
+
+    if verbose:
+        tag = "[proper bag]" if kind == "proper" else "[dump bag — no metadata]"
+        print(f"\n┌─ Topics in {os.path.basename(bag_folder)}  {tag}")
+        for tid, name, typ in topics:
+            print(f"│  {name:<40}  {typ}")
+        print("└" + "─" * 60 + "\n")
+
+    return topics
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 3.  QUATERNION → YAW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def quat_to_yaw(x, y, z, w) -> float:
+    siny_cosp = 2.0 * (w * z + x * y)
+    cosy_cosp = 1.0 - 2.0 * (y * y + z * z)
+    return math.degrees(math.atan2(siny_cosp, cosy_cosp))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 4.  EXTRACT x, y, heading  (works for proper AND dump bags)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+POSE_TYPES = {
+    "nav_msgs/msg/Odometry",
+    "geometry_msgs/msg/PoseStamped",
+    "geometry_msgs/msg/PoseWithCovarianceStamped",
+}
+
+
+def extract_pose_from_bag(bag_folder: str, target_topic: str | None = None) -> tuple[pd.DataFrame, str]:
+    """
+    Extract x, y, heading from a bag folder.
+    Works whether or not metadata.yaml exists.
+    Stitches together multiple .db3 splits automatically.
+    """
+    db3_files = find_all_db3(bag_folder)
+    if not db3_files:
+        raise FileNotFoundError(f"No .db3 files in: {bag_folder}")
+
+    kind = classify_folder(bag_folder)
+    if kind == "dump":
+        print(f"[INFO] Dump bag detected (no metadata) — reading SQLite directly.")
+
+    # ── Gather all topics across splits ───────────────────────────────────────
+    all_topic_rows: dict[str, tuple] = {}   # name → (name, type)
+    for db_file in db3_files:
+        for tid, name, typ in list_topics_in_db3(db_file):
+            all_topic_rows[name] = (name, typ)
+
+    # ── Pick target topic ──────────────────────────────────────────────────────
+    if target_topic:
+        if target_topic not in all_topic_rows:
+            raise ValueError(f"Topic '{target_topic}' not found. Use --list to see available topics.")
+        topic_name, type_name = all_topic_rows[target_topic]
+    else:
+        found = [(n, t) for n, t in all_topic_rows.values() if t in POSE_TYPES]
+        if not found:
+            raise ValueError(
+                "No Odometry/Pose topic auto-detected.\n"
+                f"Use --list on this bag to see topics, then re-run with --topic <name>.\n"
+                f"Bag: {bag_folder}"
+            )
+        topic_name, type_name = found[0]
+        print(f"[INFO] Auto-selected: {topic_name}  ({type_name})")
+
+    if not ROS2_AVAILABLE:
+        raise EnvironmentError(
+            "rclpy/rosidl not available.\n"
+            "Source ROS 2 first:  source /opt/ros/humble/setup.bash\n"
+            "Or run with --demo to test without a bag."
+        )
+
+    msg_type = get_message(type_name)
+
+    # ── Read messages across all .db3 splits ──────────────────────────────────
+    records = []
+    for db_file in db3_files:
+        conn   = sqlite3.connect(db_file)
+        cursor = conn.cursor()
+
+        # Get topic_id for this specific .db3 (IDs can differ between splits)
+        cursor.execute("SELECT id FROM topics WHERE name = ?", (topic_name,))
+        row = cursor.fetchone()
+        if not row:
+            conn.close()
+            continue  # this split doesn't have the topic
+
+        topic_id = row[0]
+        cursor.execute(
+            "SELECT timestamp, data FROM messages WHERE topic_id = ? ORDER BY timestamp",
+            (topic_id,)
+        )
+        rows = cursor.fetchall()
+        conn.close()
+
+        for timestamp, data in rows:
+            try:
+                msg = deserialize_message(data, msg_type)
+
+                if hasattr(msg, "pose") and hasattr(msg.pose, "pose"):
+                    pose = msg.pose.pose        # Odometry / PoseWithCovarianceStamped
+                elif hasattr(msg, "pose"):
+                    pose = msg.pose             # PoseStamped
+                else:
+                    continue
+
+                qx = pose.orientation.x
+                qy = pose.orientation.y
+                qz = pose.orientation.z
+                qw = pose.orientation.w
+
+                records.append({
+                    "timestamp_ns": timestamp,
+                    "time_s":       timestamp * 1e-9,
+                    "x":            pose.position.x,
+                    "y":            pose.position.y,
+                    "heading_deg":  quat_to_yaw(qx, qy, qz, qw),
+                })
+            except Exception as e:
+                print(f"[WARN] Bad message skipped: {e}")
+
+    if not records:
+        raise ValueError(f"No valid pose messages found in: {bag_folder}")
+
+    df = pd.DataFrame(records).sort_values("timestamp_ns").reset_index(drop=True)
+    df["time_s"] -= df["time_s"].iloc[0]   # zero-base time
+    print(f"[INFO] {len(df)} samples  ←  {os.path.basename(bag_folder)}")
+    return df, topic_name
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 5.  SYNTHETIC DEMO DATA
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def generate_demo_data(n: int = 500) -> pd.DataFrame:
+    print("[DEMO] Generating synthetic figure-8 path …\n")
+    t   = np.linspace(0, 4 * np.pi, n)
+    x   = np.sin(t)
+    y   = np.sin(t) * np.cos(t)
+    dx  = np.gradient(x)
+    dy  = np.gradient(y)
+    yaw = np.degrees(np.arctan2(dy, dx))
+    rng = np.random.default_rng(42)
+    return pd.DataFrame({
+        "timestamp_ns": (t * 1e9).astype(int),
+        "time_s":        t,
+        "x":             x + rng.normal(0, 0.005, n),
+        "y":             y + rng.normal(0, 0.005, n),
+        "heading_deg":   yaw + rng.normal(0, 0.5, n),
+    })
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 6.  SAVE TO CSV
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def save_csv(df: pd.DataFrame, out_path: str):
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    df.to_csv(out_path, index=False)
+    print(f"[SAVED] {out_path}")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 7.  PLOT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def plot_pose(df: pd.DataFrame, title: str, out_path: str | None = None, show: bool = True):
+    fig = plt.figure(figsize=(14, 10))
+    fig.suptitle(title, fontsize=13, fontweight="bold")
+    gs  = gridspec.GridSpec(2, 2, figure=fig, hspace=0.4, wspace=0.35)
+
+    # XY trajectory
+    ax1 = fig.add_subplot(gs[0, :])
+    sc  = ax1.scatter(df["x"], df["y"], c=df["time_s"], cmap="plasma", s=8, linewidths=0)
+    plt.colorbar(sc, ax=ax1, label="Time (s)")
+
+    step = max(1, len(df) // 40)
+    for _, row in df.iloc[::step].iterrows():
+        rad = math.radians(row["heading_deg"])
+        ax1.annotate("",
+            xy=(row["x"] + 0.04 * math.cos(rad), row["y"] + 0.04 * math.sin(rad)),
+            xytext=(row["x"], row["y"]),
+            arrowprops=dict(arrowstyle="->", color="steelblue", lw=1.2, mutation_scale=10))
+
+    ax1.set_xlabel("X (m)"); ax1.set_ylabel("Y (m)")
+    ax1.set_title("XY Trajectory  (color = time, arrows = heading)")
+    ax1.set_aspect("equal", "box"); ax1.grid(True, alpha=0.3)
+
+    # X vs time
+    ax2 = fig.add_subplot(gs[1, 0])
+    ax2.plot(df["time_s"], df["x"], color="steelblue", lw=1.2)
+    ax2.set_xlabel("Time (s)"); ax2.set_ylabel("X (m)"); ax2.set_title("X vs Time")
+    ax2.grid(True, alpha=0.3)
+
+    # Y vs time
+    ax3 = fig.add_subplot(gs[1, 1])
+    ax3.plot(df["time_s"], df["y"], color="tomato", lw=1.2)
+    ax3.set_xlabel("Time (s)"); ax3.set_ylabel("Y (m)"); ax3.set_title("Y vs Time")
+    ax3.grid(True, alpha=0.3)
+
+    if out_path:
+        os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+        plt.savefig(out_path, dpi=150, bbox_inches="tight")
+        print(f"[SAVED] {out_path}")
+    if show:
+        plt.show()
+    plt.close()
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 8.  BATCH PROCESSING
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def run_batch(parent_folder: str, target_topic: str | None, out_dir: str):
+    """
+    Process all bag folders found inside parent_folder.
+    Output structure:
+        out_dir/
+          bag_name_1/
+            odom_pose.csv
+            odom_plot.png
+          bag_name_2/
+            ...
+          ALL_BAGS_COMBINED.csv    ← all runs merged, with a 'bag' column
+    """
+    bag_folders = discover_bag_folders(parent_folder)
+    if not bag_folders:
+        print(f"[ERROR] No bag folders with .db3 found under: {parent_folder}")
+        sys.exit(1)
+
+    print(f"\n[BATCH] Found {len(bag_folders)} bag folders:")
+    for i, bf in enumerate(bag_folders, 1):
+        kind = classify_folder(bf)
+        print(f"  {i:>2}. {os.path.basename(bf):<45} [{kind}]")
+    print()
+
+    all_dfs = []
+    failed  = []
+
+    for bag_folder in bag_folders:
+        bag_name = os.path.basename(bag_folder)
+        bag_out  = os.path.join(out_dir, bag_name)
+        os.makedirs(bag_out, exist_ok=True)
+
+        try:
+            df, topic_name = extract_pose_from_bag(bag_folder, target_topic)
+
+            # Save individual CSV
+            safe_topic = topic_name.lstrip("/").replace("/", "_")
+            csv_path   = os.path.join(bag_out, f"{safe_topic}_pose.csv")
+            save_csv(df, csv_path)
+
+            # Save individual plot
+            plot_pose(
+                df,
+                title    = f"{bag_name}  —  {topic_name}",
+                out_path = os.path.join(bag_out, f"{safe_topic}_plot.png"),
+                show     = False,
+            )
+
+            # Tag for combined CSV
+            df["bag"] = bag_name
+            all_dfs.append(df)
+
+        except Exception as e:
+            print(f"[SKIP] {bag_name}: {e}\n")
+            failed.append((bag_name, str(e)))
+
+    # ── Combined CSV ──────────────────────────────────────────────────────────
+    if all_dfs:
+        combined = pd.concat(all_dfs, ignore_index=True)
+        combined_path = os.path.join(out_dir, "ALL_BAGS_COMBINED.csv")
+        save_csv(combined, combined_path)
+        print(f"\n[BATCH] Done — {len(all_dfs)} bags processed, {len(failed)} skipped.")
+    else:
+        print("\n[BATCH] No bags could be processed.")
+
+    if failed:
+        print("\n[SKIPPED BAGS]")
+        for name, reason in failed:
+            print(f"  {name}: {reason}")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 9.  CLI
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Extract x, y, heading from ROS 2 bags (single or batch).",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--bag",   help="Path to ONE bag folder")
+    parser.add_argument("--batch", help="Path to PARENT folder containing all bag folders")
+    parser.add_argument("--topic", help="Topic name (auto-detected if omitted)")
+    parser.add_argument("--out",   default="output", help="Output directory  [default: ./output]")
+    parser.add_argument("--list",  action="store_true", help="List topics in bag and exit")
+    parser.add_argument("--demo",  action="store_true", help="Run with synthetic data (no bag needed)")
+    args = parser.parse_args()
+
+    # ── Demo ──────────────────────────────────────────────────────────────────
+    if args.demo:
+        df = generate_demo_data()
+        save_csv(df, os.path.join(args.out, "demo_odom_pose.csv"))
+        plot_pose(df, "Demo — synthetic figure-8 path",
+                  out_path=os.path.join(args.out, "demo_odom_plot.png"))
+        return
+
+    # ── Batch ─────────────────────────────────────────────────────────────────
+    if args.batch:
+        run_batch(args.batch, args.topic, args.out)
+        return
+
+    # ── Single bag ────────────────────────────────────────────────────────────
+    if not args.bag:
+        parser.print_help()
+        sys.exit(1)
+
+    if args.list:
+        list_topics(args.bag)
+        return
+
+    df, topic_name = extract_pose_from_bag(args.bag, args.topic)
+    safe = topic_name.lstrip("/").replace("/", "_")
+    save_csv(df, os.path.join(args.out, f"{safe}_pose.csv"))
+    plot_pose(df, f"{os.path.basename(args.bag)}  —  {topic_name}",
+              out_path=os.path.join(args.out, f"{safe}_plot.png"))
+
+
+if __name__ == "__main__":
+    main()
