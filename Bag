@@ -1,3 +1,17 @@
+# 1. Deactivate the virtual env first
+deactivate
+
+# 2. Source ROS 2 Jazzy
+source /opt/ros/jazzy/setup.bash
+
+# 3. Now run the script
+python3 ~/scripts/ros2_bag_extractor.py --batch ~/Bag/ --out ~/extracted/
+
+# While inside testenv
+pip install catkin_pkg lark empy==3.3.4
+
+python3 -c "import rclpy; print('rclpy OK')"
+
 # Install deps once
 pip3 install pandas matplotlib numpy
 
