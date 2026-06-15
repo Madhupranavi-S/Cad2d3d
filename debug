@@ -1,0 +1,185 @@
+(testenv) madhupranavi-selvakumar@madhupranavi-selvakumar-Legion-5-15ITH6:~/scripts$ python3 ~/scripts/ros2_bag_extractor.py --bag ~/Bag/a --list
+
+┌─ Topics in a  [proper bag]
+│  /rosout                                   rcl_interfaces/msg/Log
+│  /parameter_events                         rcl_interfaces/msg/ParameterEvent
+│  /kurma_00/odometry_sim                    nav_msgs/msg/Odometry
+│  /events/write_split                       rosbag2_interfaces/msg/WriteSplitEvent
+│  /monhw                                    ublox_msgs/msg/MonHW
+│  /kurma_00/sbg/utc_time                    sbg_driver/msg/SbgUtcTime
+│  /kurma_00/sbg/imu_short                   sbg_driver/msg/SbgImuShort
+│  /ublox_gps_node/fix_velocity              geometry_msgs/msg/TwistWithCovarianceStamped
+│  /navclock                                 ublox_msgs/msg/NavCLOCK
+│  /connected_clients                        rosbridge_msgs/msg/ConnectedClients
+│  /kurma_00/sbg/imu_data                    sbg_driver/msg/SbgImuData
+│  /kurma_00/sbg/gps_vel                     sbg_driver/msg/SbgGpsVel
+│  /navheading                               sensor_msgs/msg/Imu
+│  /kurma_00/sbg/gps_raw                     sbg_driver/msg/SbgGpsRaw
+│  /navstate                                 ublox_msgs/msg/NavSAT
+│  /kurma_00/imu/nav_sat_fix                 sensor_msgs/msg/NavSatFix
+│  /navstatus                                ublox_msgs/msg/NavSTATUS
+│  /client_count                             std_msgs/msg/Int32
+│  /kurma_00/sbg/ekf_euler                   sbg_driver/msg/SbgEkfEuler
+│  /nmea                                     nmea_msgs/msg/Sentence
+│  /kurma_00/imu/pos_ecef                    geometry_msgs/msg/PointStamped
+│  /kurma_00/sbg/ekf_nav                     sbg_driver/msg/SbgEkfNav
+│  /rxmrtcm                                  ublox_msgs/msg/RxmRTCM
+│  /kurma_00/imu/data                        sensor_msgs/msg/Imu
+│  /kurma_00/sbg/gps_hdt                     sbg_driver/msg/SbgGpsHdt
+│  /navrelposned                             ublox_msgs/msg/NavRELPOSNED9
+│  /kurma_00/imu/velocity                    geometry_msgs/msg/TwistStamped
+│  /tf                                       tf2_msgs/msg/TFMessage
+│  /ublox_gps_node/fix                       sensor_msgs/msg/NavSatFix
+│  /navsvin                                  ublox_msgs/msg/NavSVIN
+│  /ublox_gps_node/navpvt                    ublox_msgs/msg/NavPVT
+│  /diagnostics                              diagnostic_msgs/msg/DiagnosticArray
+│  /kurma_00/sbg/gps_pos                     sbg_driver/msg/SbgGpsPos
+│  /navcov                                   ublox_msgs/msg/NavCOV
+│  /kurma_00/encoders                        interfaces/msg/Actuator
+│  /kurma_00/imu/utc_ref                     sensor_msgs/msg/TimeReference
+│  /aideph                                   ublox_msgs/msg/AidEPH
+│  /kurma_00/odometry                        nav_msgs/msg/Odometry
+│  /kurma_00/imu/temp                        sensor_msgs/msg/Temperature
+│  /tf_static                                tf2_msgs/msg/TFMessage
+│  /aidalm                                   ublox_msgs/msg/AidALM
+│  /kurma_00/sbg/status                      sbg_driver/msg/SbgStatus
+│  /kurma_00/sbg/ekf_quat                    sbg_driver/msg/SbgEkfQuat
+│  /kurma_01/odometry_sim                    nav_msgs/msg/Odometry
+│  /kurma_00/path_point_debug                geometry_msgs/msg/PoseWithCovarianceStamped
+│  /kurma_00/local_path                      nav_msgs/msg/Path
+│  /kurma_00/global_path                     nav_msgs/msg/Path
+│  /kurma_00/actuator_cmd                    interfaces/msg/Actuator
+│  /kurma_01/actuator_cmd                    interfaces/msg/Actuator
+│  /kurma_01/global_path                     nav_msgs/msg/Path
+│  /kurma_01/local_path                      nav_msgs/msg/Path
+│  /kurma_01/path_point_debug                geometry_msgs/msg/PoseWithCovarianceStamped
+│  /kurma_02/odometry_sim                    nav_msgs/msg/Odometry
+│  /kurma_02/actuator_cmd                    interfaces/msg/Actuator
+│  /kurma_02/global_path                     nav_msgs/msg/Path
+│  /kurma_02/local_path                      nav_msgs/msg/Path
+│  /kurma_02/path_point_debug                geometry_msgs/msg/PoseWithCovarianceStamped
+│  /kurma_00/oometry_sim                     nav_msgs/msg/Odometry
+└────────────────────────────────────────────────────────────
+(testenv) madhupranavi-selvakumar@madhupranavi-selvakumar-Legion-5-15ITH6:~/scripts$ python3 ros2_bag_extractor.py --batch ~/Bag/ --out ~/extracted/
+
+[BATCH] Found 12 bag folders:
+   1. a                                             [proper]
+   2. e_head-on                                     [proper]
+   3. primitive_1                                   [proper]
+   4. primitive_2                                   [proper]
+   5. primitive_3                                   [proper]
+   6. primitive_4                                   [proper]
+   7. rosbag2_2025_06_06-17_05_30                   [dump]
+   8. rosbag2_2025_06_06-17_16_19                   [dump]
+   9. rosbag2_2025_06_06-17_27_37                   [dump]
+  10. rosbag2_2025_06_06-17_31_36                   [dump]
+  11. rosbag2_2025_06_06-17_52_34                   [dump]
+  12. rosbag2_2025_06_10-10_37_11                   [proper]
+
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] a: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] e_head-on: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] primitive_1: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] primitive_2: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] primitive_3: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] primitive_4: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Dump bag detected (no metadata) — reading SQLite directly.
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] rosbag2_2025_06_06-17_05_30: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Dump bag detected (no metadata) — reading SQLite directly.
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] rosbag2_2025_06_06-17_16_19: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Dump bag detected (no metadata) — reading SQLite directly.
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] rosbag2_2025_06_06-17_27_37: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Dump bag detected (no metadata) — reading SQLite directly.
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] rosbag2_2025_06_06-17_31_36: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Dump bag detected (no metadata) — reading SQLite directly.
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] rosbag2_2025_06_06-17_52_34: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+[INFO] Auto-selected: /kurma_00/odometry_sim  (nav_msgs/msg/Odometry)
+[SKIP] rosbag2_2025_06_10-10_37_11: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+
+
+[BATCH] No bags could be processed.
+
+[SKIPPED BAGS]
+  a: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  e_head-on: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  primitive_1: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  primitive_2: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  primitive_3: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  primitive_4: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  rosbag2_2025_06_06-17_05_30: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  rosbag2_2025_06_06-17_16_19: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  rosbag2_2025_06_06-17_27_37: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  rosbag2_2025_06_06-17_31_36: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  rosbag2_2025_06_06-17_52_34: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+  rosbag2_2025_06_10-10_37_11: rclpy/rosidl not available.
+Source ROS 2 first:  source /opt/ros/humble/setup.bash
+Or run with --demo to test without a bag.
+(testenv) madhupranavi-selvakumar@madhupranavi-selvakumar-Legion-5-15ITH6:~/scripts$ 
+
