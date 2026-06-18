@@ -1,0 +1,17 @@
+ls -l /sys/bus/i2c/devices/4-0076/driver 2>/dev/null
+cat /sys/bus/i2c/devices/4-0076/name 2>/dev/null
+
+for d in /sys/bus/i2c/devices/4-*; do echo "$d:"; cat "$d/name" 2>/dev/null; done
+
+ls /sys/bus/iio/devices/
+
+cat /sys/bus/iio/devices/iio:device0/name
+ls /sys/bus/iio/devices/iio:device0/
+
+python3 -c "
+import smbus2, bme280
+bus = smbus2.SMBus(4)
+params = bme280.load_calibration_params(bus, 0x76)
+data = bme280.sample(bus, 0x76, params)
+print(data.temperature, data.humidity)
+"
