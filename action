@@ -1,3 +1,16 @@
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ uname -r
+5.15.148-tegra
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ find /lib/modules/$(uname -r) -iname "*ch341*"
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ sudo modprobe i2c-ch341-usb
+sudo modprobe ch341-i2c
+modprobe: FATAL: Module i2c-ch341-usb not found in directory /lib/modules/5.15.148-tegra
+modprobe: FATAL: Module ch341-i2c not found in directory /lib/modules/5.15.148-tegra
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ uname -r
+dpkg -l | grep linux-headers
+5.15.148-tegra
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ 
+
+
 find /lib/modules/$(uname -r) -iname "*ch341*"
 
 sudo modprobe i2c-ch341-usb
