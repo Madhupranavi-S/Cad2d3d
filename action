@@ -1,3 +1,12 @@
+cat /etc/nv_tegra_release
+
+dpkg -l | grep nvidia-l4t-core
+
+ls /etc/apt/sources.list.d/ | grep -i nvidia
+
+sudo apt update
+sudo apt install nvidia-l4t-kernel-headers
+
 jetson@jetson-desktop:~/guideusb2_linux_sdk$ uname -r
 5.15.148-tegra
 jetson@jetson-desktop:~/guideusb2_linux_sdk$ find /lib/modules/$(uname -r) -iname "*ch341*"
