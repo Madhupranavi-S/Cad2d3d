@@ -1,3 +1,12 @@
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ lsusb
+Bus 002 Device 003: ID 04b4:f9f9 Cypress Semiconductor Corp. InfraredCamera
+Bus 002 Device 002: ID 0bda:0489 Realtek Semiconductor Corp. 4-Port USB 3.0 Hub
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 13d3:3549 IMC Networks Bluetooth Radio
+Bus 001 Device 005: ID 1a86:5512 QinHeng Electronics CH341 in EPP/MEM/I2C mode, EPP/I2C adapter
+Bus 001 Device 004: ID 413c:2107 Dell Computer Corp. KB212-B Quiet Key Keyboard
+Bus 001 Device 002: ID 0bda:5489 Realtek Semiconductor Corp. 4-Port USB 2.0 Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 ls -l /sys/bus/i2c/devices/4-0076/driver 2>/dev/null
 cat /sys/bus/i2c/devices/4-0076/name 2>/dev/null
 
