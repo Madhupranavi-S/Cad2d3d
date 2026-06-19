@@ -1,4 +1,7 @@
-sudo modprobe ch341
+jetson@jetson-desktop:~$ sudo sudo modprobe ch341
 lsmod | grep ch341
+modprobe: FATAL: Module ch341 not found in directory /lib/modules/5.15.148-tegra
+jetson@jetson-desktop:~$ lsusb -v -d 1a86:5512 2>/dev/null | grep -i driver
+jetson@jetson-desktop:~$ 
 
-lsusb -v -d 1a86:5512 2>/dev/null | grep -i driver
+
