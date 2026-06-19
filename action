@@ -1,20 +1,6 @@
-jetson@jetson-desktop:~$ lsusb -t
-/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=tegra-xusb/4p, 10000M
-    |__ Port 1: Dev 2, If 0, Class=Hub, Driver=hub/4p, 10000M
-        |__ Port 1: Dev 3, If 0, Class=Video, Driver=uvcvideo, 5000M
-        |__ Port 1: Dev 3, If 1, Class=Video, Driver=uvcvideo, 5000M
-        |__ Port 1: Dev 3, If 2, Class=Communications, Driver=cdc_acm, 5000M
-        |__ Port 1: Dev 3, If 3, Class=CDC Data, Driver=cdc_acm, 5000M
-/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=tegra-xusb/4p, 480M
-    |__ Port 2: Dev 2, If 0, Class=Hub, Driver=hub/4p, 480M
-        |__ Port 4: Dev 5, If 0, Class=Vendor Specific Class, Driver=, 12M
-        |__ Port 2: Dev 4, If 0, Class=Human Interface Device, Driver=usbhid, 1.5M
-    |__ Port 3: Dev 3, If 0, Class=Wireless, Driver=rtk_btusb, 12M
-    |__ Port 3: Dev 3, If 1, Class=Wireless, Driver=rtk_btusb, 12M
+dpkg -l | grep linux-headers
+uname -r
 
 
-sudo apt update
-sudo apt install -y linux-modules-extra-$(uname -r) 2>&1 | tail -5
-
-sudo apt search ch341 2>&1
-sudo apt search i2c-tiny-usb 2>&1
+dpkg -l | grep linux-headers
+uname -r
