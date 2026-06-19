@@ -1,41 +1,31 @@
-jetson@jetson-desktop:~$ 
-sudo apt update
-sudo apt install -y linux-modules-extra-$(uname -r) 2>&1 | tail -5
-Hit:1 https://packages.microsoft.com/repos/code stable InRelease
-Hit:2 https://repo.download.nvidia.com/jetson/common r36.4 InRelease                                                        
-Hit:3 http://ports.ubuntu.com/ubuntu-ports jammy InRelease                                                                                                     
-Get:4 https://librealsense.realsenseai.com/Debian/apt-repo jammy InRelease [3,589 B]                                                                           
-Hit:5 https://repo.download.nvidia.com/jetson/t234 r36.4 InRelease                                                
-Hit:6 http://ports.ubuntu.com/ubuntu-ports jammy-updates InRelease                                                
-Hit:7 https://repo.download.nvidia.com/jetson/ffmpeg r36.4 InRelease                                              
-Hit:8 http://ports.ubuntu.com/ubuntu-ports jammy-backports InRelease                                             
-Hit:9 http://ports.ubuntu.com/ubuntu-ports jammy-security InRelease
-Err:4 https://librealsense.realsenseai.com/Debian/apt-repo jammy InRelease
-  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY FB0B24895113F120
-Hit:10 http://packages.ros.org/ros2/ubuntu jammy InRelease
-Fetched 3,589 B in 2s (2,010 B/s)
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-657 packages can be upgraded. Run 'apt list --upgradable' to see them.
-W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: https://librealsense.realsenseai.com/Debian/apt-repo jammy InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY FB0B24895113F120
-W: Failed to fetch https://librealsense.realsenseai.com/Debian/apt-repo/dists/jammy/InRelease  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY FB0B24895113F120
-W: Some index files failed to download. They have been ignored, or old ones used instead.
-Reading package lists...
-Building dependency tree...
-Reading state information...
-E: Unable to locate package linux-modules-extra-5.15.148-tegra
-E: Couldn't find any package by glob 'linux-modules-extra-5.15.148-tegra'
-jetson@jetson-desktop:~$ sudo apt search ch341 2>&1
-sudo apt search i2c-tiny-usb 2>&1
-Sorting... Done
-Full Text Search... Done
-flashrom/jammy 1.2-5build1 arm64
-  Identify, read, write, erase, and verify BIOS/ROM/flash chips
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ PYTHONPATH=build/python python3 single_stage_canthus.py
+Single-stage canthus model: /home/jetson/guideusb2_linux_sdk/thermal-canthus/best.pt
+Single-stage pipeline ready.
+Inference imgsz=384  conf=0.25  (no SAHI slicing at inference)
+Logging to:   /home/jetson/temperature_log.csv
+Snapshots to: /home/jetson/snapshots
+Warming up... 5 seconds
+Calibrating...
+Calibrated — min:18.2  max:36.9
+Live view started.
+Q/Escape = quit  |  S = manual snapshot
+  [stability] warming up 2.0s...
+  [stability] scene stable (spread 0.00C)
+/home/jetson/.local/lib/python3.10/site-packages/torch/cuda/__init__.py:187: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:119.)
+  return torch._C._cuda_getDeviceCount() > 0
+[16:20:12]  Amb:26.5C RH:47%  LCconf:0.78 RCconf:0.76  diff:0.0C  RAW LC:35.2 RC:35.2  CORR LC:35.2 RC:35.1  -> NORMAL
+Log:       /home/jetson/temperature_log.csv
+Snapshots: /home/jetson/snapshots
+Stopped.
+Traceback (most recent call last):
+  File "/home/jetson/guideusb2_linux_sdk/single_stage_canthus.py", line 729, in <module>
+    main()
+  File "/home/jetson/guideusb2_linux_sdk/single_stage_canthus.py", line 680, in main
+    display, _ = build_debug_display(
+  File "/home/jetson/guideusb2_linux_sdk/single_stage_canthus.py", line 326, in build_debug_display
+    cv2.circle(panel, (lc_x*2, lc_y*2), 8, (0, 255, 255), 2)
+cv2.error: OpenCV(4.9.0) :-1: error: (-5:Bad argument) in function 'circle'
+> Overload resolution failed:
+>  - Can't parse 'center'. Sequence item with index 0 has a wrong type
+>  - Can't parse 'center'. Sequence item with index 0 has a wrong type
 
-Sorting... Done
-Full Text Search... Done
-jetson@jetson-desktop:~$ dpkg -l | grep linux-headers
-uname -r
-5.15.148-tegra
-jetson@jetson-desktop:~$ 
