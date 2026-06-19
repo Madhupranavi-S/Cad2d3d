@@ -1,6 +1,41 @@
-dpkg -l | grep linux-headers
-uname -r
+jetson@jetson-desktop:~$ 
+sudo apt update
+sudo apt install -y linux-modules-extra-$(uname -r) 2>&1 | tail -5
+Hit:1 https://packages.microsoft.com/repos/code stable InRelease
+Hit:2 https://repo.download.nvidia.com/jetson/common r36.4 InRelease                                                        
+Hit:3 http://ports.ubuntu.com/ubuntu-ports jammy InRelease                                                                                                     
+Get:4 https://librealsense.realsenseai.com/Debian/apt-repo jammy InRelease [3,589 B]                                                                           
+Hit:5 https://repo.download.nvidia.com/jetson/t234 r36.4 InRelease                                                
+Hit:6 http://ports.ubuntu.com/ubuntu-ports jammy-updates InRelease                                                
+Hit:7 https://repo.download.nvidia.com/jetson/ffmpeg r36.4 InRelease                                              
+Hit:8 http://ports.ubuntu.com/ubuntu-ports jammy-backports InRelease                                             
+Hit:9 http://ports.ubuntu.com/ubuntu-ports jammy-security InRelease
+Err:4 https://librealsense.realsenseai.com/Debian/apt-repo jammy InRelease
+  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY FB0B24895113F120
+Hit:10 http://packages.ros.org/ros2/ubuntu jammy InRelease
+Fetched 3,589 B in 2s (2,010 B/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+657 packages can be upgraded. Run 'apt list --upgradable' to see them.
+W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: https://librealsense.realsenseai.com/Debian/apt-repo jammy InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY FB0B24895113F120
+W: Failed to fetch https://librealsense.realsenseai.com/Debian/apt-repo/dists/jammy/InRelease  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY FB0B24895113F120
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package linux-modules-extra-5.15.148-tegra
+E: Couldn't find any package by glob 'linux-modules-extra-5.15.148-tegra'
+jetson@jetson-desktop:~$ sudo apt search ch341 2>&1
+sudo apt search i2c-tiny-usb 2>&1
+Sorting... Done
+Full Text Search... Done
+flashrom/jammy 1.2-5build1 arm64
+  Identify, read, write, erase, and verify BIOS/ROM/flash chips
 
-
-dpkg -l | grep linux-headers
+Sorting... Done
+Full Text Search... Done
+jetson@jetson-desktop:~$ dpkg -l | grep linux-headers
 uname -r
+5.15.148-tegra
+jetson@jetson-desktop:~$ 
