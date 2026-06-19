@@ -1,7 +1,39 @@
-jetson@jetson-desktop:~$ sudo sudo modprobe ch341
-lsmod | grep ch341
-modprobe: FATAL: Module ch341 not found in directory /lib/modules/5.15.148-tegra
-jetson@jetson-desktop:~$ lsusb -v -d 1a86:5512 2>/dev/null | grep -i driver
+jetson@jetson-desktop:~$ sudo dmesg | grep -i "usb" | tail -30
+[   13.518089] rtk_btusb: btusb_open hdev->promisc ==0
+[   13.518090] rtk_btusb: download_patch start
+[   13.518093] rtk_btusb: chip type value: 0x73
+[   13.519602] rtk_btusb: chip_type->status = 0x0, chip_type->chip = 0xbeef
+[   13.519608] rtk_btusb: HCI reset.
+[   13.530604] rtk_btusb: read_ver_rsp->lmp_subver = 0xcbc9
+[   13.530611] rtk_btusb: read_ver_rsp->hci_rev = 0x9a8
+[   13.530612] rtk_btusb: patch_entry->lmp_sub = 0x8822
+[   13.530613] rtk_btusb: Firmware already exists
+[   13.530616] rtk_btusb: Rtk patch end 1
+[   13.530617] rtk_btusb: btusb_open set HCI UP RUNNING
+[   13.530657] rtk_btusb: btusb_open end
+[   13.764859] usb0: HOST MAC fa:c8:f8:29:31:18
+[   13.764868] usb0: MAC fa:c8:f8:29:31:19
+[   13.766150] usb1: HOST MAC fa:c8:f8:29:31:1a
+[   13.766155] usb1: MAC fa:c8:f8:29:31:1b
+[   13.767537] tegra-xudc 3550000.usb: EP 0 (type: ctrl, dir: out) enabled
+[   13.772626] l4tbr0: port 1(usb0) entered blocking state
+[   13.772646] l4tbr0: port 1(usb0) entered disabled state
+[   13.773949] device usb0 entered promiscuous mode
+[   13.810504] l4tbr0: port 2(usb1) entered blocking state
+[   13.810518] l4tbr0: port 2(usb1) entered disabled state
+[   13.810782] device usb1 entered promiscuous mode
+[   16.513710] usb 2-1.1: Failed to query (GET_DEF) UVC control 2 on unit 2: 1 (exp. 2).
+[   16.533516] usb 2-1.1: Failed to query (GET_MIN) UVC control 2 on unit 2: 1 (exp. 2).
+[   16.553495] usb 2-1.1: Failed to query (GET_MAX) UVC control 2 on unit 2: 1 (exp. 2).
+[   16.573483] usb 2-1.1: Failed to query (GET_RES) UVC control 2 on unit 2: 1 (exp. 2).
+[  897.908817] rtk_btusb: btusb_notify: hci0 evt 1
+[ 1982.399432] rtk_btusb: btusb_notify: hci0 evt 2
+[ 2850.509768] rtk_btusb: btusb_notify: hci0 evt 1
+jetson@jetson-desktop:~$ find /lib/modules/$(uname -r) -iname "*ch341*"
+jetson@jetson-desktop:~$ find /lib/modules/$(uname -r) -iname "*341*"
+jetson@jetson-desktop:~$ lusb -t
+Command 'lusb' not found, did you mean:
+  command 'lsusb' from deb usbutils (1:014-1build1)
+Try: sudo apt install <deb name>
 jetson@jetson-desktop:~$ 
-
 
