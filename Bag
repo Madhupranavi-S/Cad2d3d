@@ -1,146 +1,88 @@
-jetson@jetson-desktop:~/guideusb2_linux_sdk$ PYTHONPATH=build/python python3 pyolo_sahi_fine_up.py
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ PYTHONPATH=build/python python3 pyolo_sahi_fine_up.py --slice-w 160 --slice-h 120 --upscale 1.0
 Single-stage canthus model: /home/jetson/guideusb2_linux_sdk/thermal-canthus-detector/detect.pt
 Single-stage pipeline ready.
-Inference imgsz=320  conf=0.25  SAHI slice=96x72  overlap=0.35  upscale=2.0x
+Inference imgsz=320  conf=0.25  SAHI slice=160x120  overlap=0.35  upscale=1.0x
 Logging to:   /home/jetson/temperature_log.csv
 Snapshots to: /home/jetson/snapshots
 Warming up... 5 seconds
 Calibrating...
-Calibrated — min:19.8  max:35.5
+Calibrated — min:21.9  max:35.4
 Live view started.
 Q/Escape = quit  |  S = manual snapshot
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
 /home/jetson/.local/lib/python3.10/site-packages/torch/cuda/__init__.py:187: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:119.)
   return torch._C._cuda_getDeviceCount() > 0
-slice (124,92)-(220,164): max_conf=0.232, cls=[0, 0, 0, 0]
-slice (186,92)-(282,164): max_conf=0.033, cls=[1, 1]
-slice (124,138)-(220,210): max_conf=0.012, cls=[0, 1]
-slice (124,184)-(220,256): max_conf=0.015, cls=[0, 0]
-slice (186,184)-(282,256): max_conf=0.012, cls=[0]
-slice (186,216)-(282,288): max_conf=0.020, cls=[0, 0, 0]
-[10:34:19]  Amb:25.1C RH:52%  LCconf:0.23 RCconf:0.03  diff:0.1C  RAW LC:35.1 RC:35.0  CORR LC:35.0 RC:35.0  -> NORMAL
+slice (104,78)-(264,198): max_conf=0.555, cls=[1, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+slice (208,78)-(368,198): max_conf=0.439, cls=[1, 1]
+slice (0,156)-(160,276): max_conf=0.015, cls=[0]
+slice (104,156)-(264,276): max_conf=0.035, cls=[0, 0, 0, 0, 0]
+slice (104,168)-(264,288): max_conf=0.014, cls=[0]
+[10:47:19]  Amb:25.5C RH:51%  LCconf:0.40 RCconf:0.56  diff:0.1C  RAW LC:34.9 RC:35.0  CORR LC:34.8 RC:34.9  -> NORMAL
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (124,92)-(220,164): max_conf=0.142, cls=[0, 0, 0, 1, 0, 0, 0]
-slice (186,92)-(282,164): max_conf=0.168, cls=[0, 1, 1, 1, 1, 0]
-slice (124,138)-(220,210): max_conf=0.085, cls=[0, 0, 0]
-slice (186,138)-(282,210): max_conf=0.048, cls=[0, 0, 0, 0, 0, 0, 0, 0, 0]
-slice (248,138)-(344,210): max_conf=0.012, cls=[0]
-slice (124,184)-(220,256): max_conf=0.013, cls=[0]
-[10:34:27]  Amb:25.2C RH:51%  LCconf:0.17 RCconf:0.10  diff:0.3C  RAW LC:35.5 RC:35.2  CORR LC:35.5 RC:35.2  -> NORMAL
+slice (104,0)-(264,120): max_conf=0.018, cls=[1]
+slice (104,78)-(264,198): max_conf=0.497, cls=[1, 0, 0, 0, 0, 1, 0, 0]
+slice (208,78)-(368,198): max_conf=0.316, cls=[1, 1]
+slice (104,156)-(264,276): max_conf=0.018, cls=[0]
+slice (208,168)-(368,288): max_conf=0.016, cls=[0]
+slice (224,168)-(384,288): max_conf=0.021, cls=[0, 0]
+[10:47:25]  Amb:25.6C RH:51%  LCconf:0.42 RCconf:0.50  diff:0.2C  RAW LC:34.8 RC:35.1  CORR LC:34.8 RC:35.0  -> NORMAL
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (62,92)-(158,164): max_conf=0.012, cls=[1]
-slice (124,92)-(220,164): max_conf=0.099, cls=[0, 0, 0, 0, 0, 0]
-slice (186,138)-(282,210): max_conf=0.038, cls=[0, 0, 0, 0]
-slice (248,138)-(344,210): max_conf=0.015, cls=[0, 0, 0]
-slice (124,184)-(220,256): max_conf=0.012, cls=[0]
-slice (186,184)-(282,256): max_conf=0.050, cls=[0]
-slice (186,216)-(282,288): max_conf=0.063, cls=[0, 0, 0]
-[10:34:35]  Amb:25.2C RH:51%  LCconf:0.10 RCconf:0.01  diff:0.2C  RAW LC:35.3 RC:35.1  CORR LC:35.2 RC:35.0  -> NORMAL
-Auto snapshot: /home/jetson/snapshots/snap_20260624_103435_auto_001.png
+slice (104,78)-(264,198): max_conf=0.403, cls=[1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]
+slice (208,78)-(368,198): max_conf=0.134, cls=[1, 1]
+slice (104,156)-(264,276): max_conf=0.027, cls=[0, 0, 0]
+slice (224,168)-(384,288): max_conf=0.010, cls=[0]
+[10:47:31]  Amb:25.6C RH:50%  LCconf:0.36 RCconf:0.40  diff:0.1C  RAW LC:34.9 RC:35.1  CORR LC:34.9 RC:35.0  -> NORMAL
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (62,46)-(158,118): max_conf=0.082, cls=[0, 0, 0]
-slice (124,46)-(220,118): max_conf=0.026, cls=[0, 0, 0]
-slice (186,46)-(282,118): max_conf=0.042, cls=[0, 0, 1]
-slice (62,92)-(158,164): max_conf=0.023, cls=[0, 0, 0]
-slice (124,92)-(220,164): max_conf=0.344, cls=[0, 1, 0, 0, 0, 1, 0, 1]
-slice (186,92)-(282,164): max_conf=0.126, cls=[1, 1, 0, 1]
-slice (124,138)-(220,210): max_conf=0.017, cls=[1, 1]
-slice (186,138)-(282,210): max_conf=0.026, cls=[0, 0, 0, 0, 0]
-slice (124,184)-(220,256): max_conf=0.019, cls=[0]
-slice (248,184)-(344,256): max_conf=0.013, cls=[0, 0]
-slice (124,216)-(220,288): max_conf=0.037, cls=[0]
-slice (186,216)-(282,288): max_conf=0.035, cls=[0, 0, 0]
-[10:34:43]  Amb:25.2C RH:51%  LCconf:0.34 RCconf:0.13  diff:0.0C  RAW LC:35.6 RC:35.7  CORR LC:35.6 RC:35.6  -> NORMAL
+slice (104,0)-(264,120): max_conf=0.017, cls=[0, 0]
+slice (104,78)-(264,198): max_conf=0.512, cls=[1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0]
+slice (208,78)-(368,198): max_conf=0.146, cls=[1, 1]
+slice (104,156)-(264,276): max_conf=0.029, cls=[0, 0, 0, 0, 0, 1]
+[10:47:37]  Amb:25.6C RH:50%  LCconf:0.39 RCconf:0.51  diff:0.1C  RAW LC:35.3 RC:35.2  CORR LC:35.2 RC:35.1  -> NORMAL
+Auto snapshot: /home/jetson/snapshots/snap_20260624_104737_auto_001.png
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (124,46)-(220,118): max_conf=0.019, cls=[0, 0]
-slice (124,92)-(220,164): max_conf=0.069, cls=[0, 0]
-slice (62,138)-(158,210): max_conf=0.117, cls=[0, 0]
-slice (124,138)-(220,210): max_conf=0.063, cls=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-slice (124,184)-(220,256): max_conf=0.061, cls=[0, 0, 0, 0, 0, 0, 0]
-slice (62,216)-(158,288): max_conf=0.022, cls=[0, 0, 0]
-slice (124,216)-(220,288): max_conf=0.048, cls=[0, 0]
-slice (186,216)-(282,288): max_conf=0.016, cls=[0, 0]
-[10:34:52]  Amb:25.2C RH:51%  LCconf:0.12 RCconf:0.00  sides:left  RAW LC:35.1 RC:0.0  CORR LC:35.0 RC:0.0  -> NORMAL
+slice (104,78)-(264,198): max_conf=0.567, cls=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+slice (208,78)-(368,198): max_conf=0.033, cls=[1, 1]
+slice (0,156)-(160,276): max_conf=0.012, cls=[0]
+slice (104,156)-(264,276): max_conf=0.042, cls=[0, 0, 0, 0, 0]
+slice (208,168)-(368,288): max_conf=0.015, cls=[0]
+slice (224,168)-(384,288): max_conf=0.026, cls=[0, 0, 0]
+[10:47:43]  Amb:25.6C RH:50%  LCconf:0.29 RCconf:0.57  diff:0.1C  RAW LC:34.7 RC:34.7  CORR LC:34.6 RC:34.7  -> NORMAL
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (62,138)-(158,210): max_conf=0.018, cls=[0, 1]
-slice (124,138)-(220,210): max_conf=0.025, cls=[0, 0, 0]
-slice (62,184)-(158,256): max_conf=0.011, cls=[0]
-slice (124,184)-(220,256): max_conf=0.030, cls=[0, 0]
-slice (62,216)-(158,288): max_conf=0.029, cls=[0, 0]
-[10:35:00]  Amb:25.2C RH:51%  LCconf:0.03 RCconf:0.01  diff:1.2C  RAW LC:34.5 RC:35.7  CORR LC:34.4 RC:35.6  -> NORMAL
+slice (208,156)-(368,276): max_conf=0.014, cls=[0]
+slice (224,156)-(384,276): max_conf=0.052, cls=[0, 0, 0]
+slice (208,168)-(368,288): max_conf=0.027, cls=[0, 0]
+slice (224,168)-(384,288): max_conf=0.088, cls=[0, 0, 0]
+[10:47:49]  Amb:25.6C RH:50%  LCconf:0.09 RCconf:0.00  sides:left  RAW LC:33.6 RC:0.0  CORR LC:33.6 RC:0.0  -> NORMAL
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (62,138)-(158,210): max_conf=0.024, cls=[1, 1]
-slice (124,184)-(220,256): max_conf=0.021, cls=[0]
-slice (62,216)-(158,288): max_conf=0.055, cls=[0, 0, 0]
-slice (124,216)-(220,288): max_conf=0.214, cls=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-slice (186,216)-(282,288): max_conf=0.043, cls=[0, 0]
-[10:35:08]  Amb:25.3C RH:51%  LCconf:0.21 RCconf:0.02  diff:0.8C  RAW LC:35.6 RC:36.3  CORR LC:35.5 RC:36.3  -> NORMAL
-Auto snapshot: /home/jetson/snapshots/snap_20260624_103508_auto_002.png
+slice (224,156)-(384,276): max_conf=0.012, cls=[0]
+slice (224,168)-(384,288): max_conf=0.019, cls=[0, 0, 0]
+[10:47:55]  Amb:25.6C RH:50%  LCconf:0.02 RCconf:0.00  sides:left  RAW LC:33.8 RC:0.0  CORR LC:33.8 RC:0.0  -> NORMAL
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (186,92)-(282,164): max_conf=0.020, cls=[0]
-slice (124,138)-(220,210): max_conf=0.032, cls=[0]
-slice (186,138)-(282,210): max_conf=0.077, cls=[0, 0]
-slice (186,184)-(282,256): max_conf=0.019, cls=[0]
-slice (124,216)-(220,288): max_conf=0.014, cls=[1]
-[10:35:16]  Amb:25.3C RH:51%  LCconf:0.08 RCconf:0.01  diff:1.2C  RAW LC:35.6 RC:36.9  CORR LC:35.6 RC:36.8  -> NORMAL
+slice (224,156)-(384,276): max_conf=0.011, cls=[0]
+slice (224,168)-(384,288): max_conf=0.021, cls=[0]
+[10:48:01]  Amb:25.6C RH:51%  LCconf:0.02 RCconf:0.00  sides:left  RAW LC:34.1 RC:0.0  CORR LC:34.1 RC:0.0  -> NORMAL
+  [stability] warming up 2.0s...
+  [stability] scene stable (spread 0.00C)
+slice (224,168)-(384,288): max_conf=0.019, cls=[0]
+[10:48:07]  Amb:25.6C RH:51%  LCconf:0.02 RCconf:0.00  sides:left  RAW LC:34.1 RC:0.0  CORR LC:34.0 RC:0.0  -> NORMAL
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
 Holding last reading (1/3)
+Auto snapshot: /home/jetson/snapshots/snap_20260624_104813_auto_002.png
   [stability] warming up 2.0s...
   [stability] scene stable (spread 0.00C)
-slice (186,184)-(282,256): max_conf=0.010, cls=[1]
-[10:35:33]  Amb:25.3C RH:51%  LCconf:0.00 RCconf:0.01  sides:right  RAW LC:0.0 RC:35.2  CORR LC:0.0 RC:35.1  -> NORMAL
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-slice (186,92)-(282,164): max_conf=0.025, cls=[0, 0]
-[10:35:41]  Amb:25.3C RH:51%  LCconf:0.02 RCconf:0.00  sides:left  RAW LC:34.8 RC:0.0  CORR LC:34.7 RC:0.0  -> NORMAL
-Auto snapshot: /home/jetson/snapshots/snap_20260624_103541_auto_003.png
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-slice (124,138)-(220,210): max_conf=0.130, cls=[0, 0]
-[10:35:49]  Amb:25.3C RH:51%  LCconf:0.13 RCconf:0.00  sides:left  RAW LC:36.2 RC:0.0  CORR LC:36.1 RC:0.0  -> NORMAL
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-slice (124,138)-(220,210): max_conf=0.017, cls=[0]
-slice (186,138)-(282,210): max_conf=0.028, cls=[0, 0, 0]
-[10:35:57]  Amb:25.3C RH:51%  LCconf:0.03 RCconf:0.00  sides:left  RAW LC:34.7 RC:0.0  CORR LC:34.6 RC:0.0  -> NORMAL
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-slice (186,92)-(282,164): max_conf=0.030, cls=[0, 0]
-slice (124,138)-(220,210): max_conf=0.013, cls=[0]
-slice (186,138)-(282,210): max_conf=0.019, cls=[1, 0]
-[10:36:05]  Amb:25.3C RH:51%  LCconf:0.03 RCconf:0.02  diff:0.7C  RAW LC:35.8 RC:36.5  CORR LC:35.7 RC:36.5  -> NORMAL
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-slice (124,138)-(220,210): max_conf=0.061, cls=[1, 1, 1, 1, 0]
-slice (186,184)-(282,256): max_conf=0.012, cls=[0]
-  [symmetry] rejected — LC:35.5 RC:37.1 diff:1.5C > 1.5C
-[10:36:14]  Amb:25.3C RH:51%  LCconf:0.03 RCconf:0.02  diff:0.7C  RAW LC:35.8 RC:36.5  CORR LC:35.7 RC:36.5  -> NORMAL [holding]
-Auto snapshot: /home/jetson/snapshots/snap_20260624_103614_auto_004.png
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-slice (186,92)-(282,164): max_conf=0.022, cls=[0]
-slice (62,138)-(158,210): max_conf=0.011, cls=[0]
-slice (124,138)-(220,210): max_conf=0.016, cls=[0]
-slice (186,138)-(282,210): max_conf=0.087, cls=[0, 0, 0, 0, 0, 0]
-slice (186,184)-(282,256): max_conf=0.020, cls=[1]
-  [spike guard] rejected 37.3C (avg 35.5C  delta 1.9C)
-[10:36:22]  Amb:25.2C RH:51%  LCconf:0.03 RCconf:0.02  diff:0.7C  RAW LC:35.8 RC:36.5  CORR LC:35.7 RC:36.5  -> NORMAL [holding]
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-slice (124,46)-(220,118): max_conf=0.020, cls=[0]
-slice (288,138)-(384,210): max_conf=0.011, cls=[0, 0]
-slice (288,216)-(384,288): max_conf=0.012, cls=[0, 0]
-[10:36:30]  Amb:25.3C RH:52%  LCconf:0.02 RCconf:0.00  sides:left  RAW LC:34.9 RC:0.0  CORR LC:34.9 RC:0.0  -> NORMAL
+slice (224,156)-(384,276): max_conf=0.018, cls=[0]
+[10:48:19]  Amb:25.6C RH:51%  LCconf:0.02 RCconf:0.00  sides:left  RAW LC:33.6 RC:0.0  CORR LC:33.6 RC:0.0  -> NORMAL
 Quitting...
 Log:       /home/jetson/temperature_log.csv
 Snapshots: /home/jetson/snapshots
 Stopped.
+jetson@jetson-desktop:~/guideusb2_linux_sdk$ 
