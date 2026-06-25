@@ -1,84 +1,844 @@
-etson@jetson-desktop:~/guideusb2_linux_sdk$ nano ~/guideusb2_linux_sdk/thermal_monitor.py
-jetson@jetson-desktop:~/guideusb2_linux_sdk$ PYTHONPATH=build/python python3 thermal_monitor.py
-Canthus model : /home/jetson/guideusb2_linux_sdk/thermal-canthus-detector/detect.pt
-Multi-scale SAHI pipeline ready.
-  conf=0.2  imgsz=320  clahe=False  verbose_sahi=True  sanity=True
-  Scale tiers (slice_w x slice_h  overlap  upscale):
-    tier 0: 128x96  overlap=0.35  upscale=1.5x  -> model sees 192x144
-    tier 1: 96x72  overlap=0.4  upscale=2.0x  -> model sees 192x144
-    tier 2: 64x48  overlap=0.5  upscale=3.5x  -> model sees 224x168
-Logging to:   /home/jetson/temperature_log.csv
-Snapshots to: /home/jetson/snapshots
-Warming up... 5 seconds
-Calibrating...
-Calibrated — min:21.4  max:35.3
-Live view started.
-Q / Escape = quit  |  S = manual snapshot
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-[PREPROCESS] dtype=uint8  shape=(288, 384, 3)  channel means: B=17.6 G=35.7 R=146.7
-/home/jetson/.local/lib/python3.10/site-packages/torch/cuda/__init__.py:187: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 12060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:119.)
-  return torch._C._cuda_getDeviceCount() > 0
-[SANITY] Whole-frame hits: conf=[      0.757       0.743]  cls=[1, 0]
-[SAHI] tier=0  tile=128x96  overlap=0.35  upscale=1.5x  -> model input 192x144  slices=25
-  HIT tier=0 slice (83,62)-(211,158)  conf=[       0.52        0.49]  cls=[0, 1]
-  HIT tier=0 slice (166,62)-(294,158)  conf=[      0.558       0.526]  cls=[1, 0]
-  HIT tier=0 slice (83,124)-(211,220)  conf=[      0.495        0.44       0.278]  cls=[0, 1, 1]
-  HIT tier=0 slice (166,124)-(294,220)  conf=[      0.522       0.507]  cls=[0, 1]
-[SAHI] tier=1  tile=96x72  overlap=0.4  upscale=2.0x  -> model input 192x144  slices=49
-  HIT tier=1 slice (114,86)-(210,158)  conf=[      0.354]  cls=[0]
-  HIT tier=1 slice (171,86)-(267,158)  conf=[      0.332]  cls=[0]
-  HIT tier=1 slice (114,129)-(210,201)  conf=[       0.22]  cls=[0]
-  HIT tier=1 slice (171,129)-(267,201)  conf=[      0.273]  cls=[0]
-[SAHI] tier=2  tile=64x48  overlap=0.5  upscale=3.5x  -> model input 224x168  slices=121
-[SAHI] Total slices across all tiers: 195  raw hits: 13  left raw: 8  right raw: 5
-[10:16:01]  Amb:25.0C RH:51%  LCconf:0.53 RCconf:0.56  diff:0.1C  RAW LC:35.1 RC:35.0  CORR LC:35.0 RC:34.9  -> NORMAL
-Auto snapshot: /home/jetson/snapshots/snap_20260625_101601_auto_001.png
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-[SANITY] Whole-frame hits: conf=[      0.742       0.738]  cls=[1, 0]
-[SAHI] tier=0  tile=128x96  overlap=0.35  upscale=1.5x  -> model input 192x144  slices=25
-  HIT tier=0 slice (83,62)-(211,158)  conf=[      0.554       0.431]  cls=[0, 1]
-  HIT tier=0 slice (166,62)-(294,158)  conf=[      0.493       0.477]  cls=[0, 1]
-  HIT tier=0 slice (83,124)-(211,220)  conf=[      0.509       0.418]  cls=[0, 1]
-  HIT tier=0 slice (166,124)-(294,220)  conf=[      0.523        0.51]  cls=[0, 1]
-[SAHI] tier=1  tile=96x72  overlap=0.4  upscale=2.0x  -> model input 192x144  slices=49
-  HIT tier=1 slice (114,86)-(210,158)  conf=[      0.319]  cls=[0]
-  HIT tier=1 slice (171,86)-(267,158)  conf=[       0.28]  cls=[0]
-  HIT tier=1 slice (114,129)-(210,201)  conf=[      0.311       0.219       0.214]  cls=[0, 1, 0]
-  HIT tier=1 slice (171,129)-(267,201)  conf=[      0.374]  cls=[0]
-[SAHI] tier=2  tile=64x48  overlap=0.5  upscale=3.5x  -> model input 224x168  slices=121
-[SAHI] Total slices across all tiers: 195  raw hits: 14  left raw: 9  right raw: 5
-[10:16:27]  Amb:25.1C RH:51%  LCconf:0.55 RCconf:0.51  diff:0.2C  RAW LC:34.7 RC:34.9  CORR LC:34.7 RC:34.9  -> NORMAL
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-[SANITY] Whole-frame hits: conf=[      0.647        0.48       0.054]  cls=[1, 0, 1]
-[SAHI] tier=0  tile=128x96  overlap=0.35  upscale=1.5x  -> model input 192x144  slices=25
-  HIT tier=0 slice (83,62)-(211,158)  conf=[      0.536]  cls=[1]
-  HIT tier=0 slice (83,124)-(211,220)  conf=[      0.562       0.411       0.258       0.245]  cls=[1, 0, 0, 0]
-  HIT tier=0 slice (166,124)-(294,220)  conf=[      0.359]  cls=[1]
-[SAHI] tier=1  tile=96x72  overlap=0.4  upscale=2.0x  -> model input 192x144  slices=49
-  HIT tier=1 slice (114,86)-(210,158)  conf=[      0.417       0.275]  cls=[1, 0]
-  HIT tier=1 slice (114,129)-(210,201)  conf=[      0.401       0.259       0.225       0.207       0.207]  cls=[1, 0, 1, 0, 0]
-[SAHI] tier=2  tile=64x48  overlap=0.5  upscale=3.5x  -> model input 224x168  slices=121
-  HIT tier=2 slice (128,120)-(192,168)  conf=[      0.242]  cls=[0]
-[SAHI] Total slices across all tiers: 195  raw hits: 14  left raw: 8  right raw: 6
-[10:16:53]  Amb:25.2C RH:51%  LCconf:0.41 RCconf:0.56  diff:0.3C  RAW LC:34.4 RC:34.6  CORR LC:34.3 RC:34.6  -> NORMAL
-Auto snapshot: /home/jetson/snapshots/snap_20260625_101653_auto_002.png
-  [stability] warming up 2.0s...
-  [stability] scene stable (spread 0.00C)
-[SANITY] Whole-frame hits: conf=[      0.721       0.473       0.112]  cls=[1, 0, 0]
-[SAHI] tier=0  tile=128x96  overlap=0.35  upscale=1.5x  -> model input 192x144  slices=25
-  HIT tier=0 slice (83,62)-(211,158)  conf=[      0.406       0.262       0.222]  cls=[1, 1, 0]
-  HIT tier=0 slice (83,124)-(211,220)  conf=[      0.428        0.27]  cls=[1, 0]
-[SAHI] tier=1  tile=96x72  overlap=0.4  upscale=2.0x  -> model input 192x144  slices=49
-[SAHI] tier=2  tile=64x48  overlap=0.5  upscale=3.5x  -> model input 224x168  slices=121
-  HIT tier=2 slice (96,96)-(160,144)  conf=[      0.223       0.204]  cls=[0, 0]
-  HIT tier=2 slice (128,96)-(192,144)  conf=[      0.268]  cls=[0]
-^C
-Stopped.
-Log:       /home/jetson/temperature_log.csv
-Snapshots: /home/jetson/snapshots
-Stopped.
-jetson@jetson-desktop:~/guideusb2_linux_sdk$ 
+"""
+diagnostic_auto.py
+==================
+Fully automatic diagnostic — no keyboard required.
+Walk through each scenario during the countdown, the script
+captures samples automatically, evaluates, and writes a report.
 
+Usage:
+    PYTHONPATH=build/python python3 diagnostic_auto.py
+
+Workflow per scenario:
+    1. Big instruction shown on screen + spoken via terminal bell
+    2. PREPARE countdown  (you walk to position)
+    3. CAPTURE phase      (auto-captures 5 samples silently)
+    4. Results shown briefly, move to next scenario
+
+Total time: ~5 minutes for all 8 scenarios.
+"""
+
+import sys
+import time
+import os
+import json
+from datetime import datetime
+from pathlib import Path
+
+sys.path.insert(0, 'build/python')
+
+import guideusb2 as g
+import numpy as np
+import cv2
+from ultralytics import YOLO
+
+# =============================================================
+# CONFIG
+# =============================================================
+WEIGHTS_CANDIDATES = [
+    Path(__file__).parent / "thermal-canthus-detector" / "detect.pt",
+    Path(__file__).parent / "detect.pt",
+    Path.home() / "thermal-canthus-detector" / "detect.pt",
+    Path(__file__).parent / "thermal-canthus-detector" / "best.pt",
+    Path(__file__).parent / "best.pt",
+    Path.home() / "thermal-canthus-detector" / "best.pt",
+]
+
+SERIAL_PORT  = "/dev/ttyACM0"
+EMISSIVITY   = 0.98
+IMG_SIZE     = 320
+CONF_THRESH  = 0.20
+SANITY_CONF  = 0.05
+
+SAHI_CONFIGS = [
+    (128, 96,  0.35, 1.5),
+    (96,  72,  0.40, 2.0),
+    (64,  48,  0.50, 3.5),
+    (48,  36,  0.55, 4.5),
+]
+SAHI_MERGE_IOU = 0.25
+
+PREPARE_SECS        = 8    # countdown before capturing — time to walk to position
+CAPTURE_SECS        = 6    # window during which samples are captured
+SAMPLES_PER_SCENE   = 5    # how many frames to grab during capture window
+RESULT_DISPLAY_SECS = 4    # how long to show pass/fail before next scenario
+
+REPORT_PATH = os.path.expanduser("~/diagnostic_report.txt")
+JSON_PATH   = os.path.expanduser("~/diagnostic_raw.json")
+SNAP_DIR    = os.path.expanduser("~/diagnostic_snaps")
+
+# =============================================================
+# SCENARIOS
+# =============================================================
+SCENARIOS = [
+    {
+        "id":          "A",
+        "label":       "Face forward — arm's length (~0.5m)",
+        "instruction": "Stand at ARM'S LENGTH. Face camera DIRECTLY.",
+        "line2":       "Hold completely still.",
+        "expected":    "Both canthi, conf > 0.60",
+    },
+    {
+        "id":          "B",
+        "label":       "Face forward — 1.5m",
+        "instruction": "Move to ~1.5m from camera.",
+        "line2":       "Face DIRECTLY forward. Hold still.",
+        "expected":    "Both canthi, conf > 0.40",
+    },
+    {
+        "id":          "C",
+        "label":       "Face forward — 3m",
+        "instruction": "Move to ~3m from camera.",
+        "line2":       "Face DIRECTLY forward. Hold still.",
+        "expected":    "Both canthi, conf > 0.25",
+    },
+    {
+        "id":          "D",
+        "label":       "Face turned 30 degrees right — arm's length",
+        "instruction": "Return to ARM'S LENGTH.",
+        "line2":       "Turn face ~30 degrees to YOUR RIGHT.",
+        "expected":    "At least one canthus detected",
+    },
+    {
+        "id":          "E",
+        "label":       "Face turned 60 degrees right — arm's length",
+        "instruction": "Stay at ARM'S LENGTH.",
+        "line2":       "Turn face ~60 degrees to YOUR RIGHT (near profile).",
+        "expected":    "Single left canthus, conf > 0.30",
+    },
+    {
+        "id":          "F",
+        "label":       "Right canthus occluded — arm's length",
+        "instruction": "ARM'S LENGTH. Cover your RIGHT eye with your hand.",
+        "line2":       "Keep left eye open and facing camera.",
+        "expected":    "Only left canthus detected",
+    },
+    {
+        "id":          "G",
+        "label":       "Left canthus occluded — arm's length",
+        "instruction": "ARM'S LENGTH. Cover your LEFT eye with your hand.",
+        "line2":       "Keep right eye open and facing camera.",
+        "expected":    "Only right canthus detected",
+    },
+    {
+        "id":          "H",
+        "label":       "Face turned 30 degrees right — 3m",
+        "instruction": "Move to ~3m from camera.",
+        "line2":       "Turn face ~30 degrees to YOUR RIGHT.",
+        "expected":    "At least one canthus at distance + angle",
+    },
+]
+
+# Phase states
+PHASE_PREPARE = "PREPARE"
+PHASE_CAPTURE = "CAPTURE"
+PHASE_RESULT  = "RESULT"
+PHASE_DONE    = "DONE"
+
+# Colors (BGR)
+COL_WHITE   = (255, 255, 255)
+COL_YELLOW  = (0,   255, 255)
+COL_GREEN   = (0,   255, 0)
+COL_ORANGE  = (0,   165, 255)
+COL_RED     = (0,   0,   255)
+COL_GREY    = (160, 160, 160)
+COL_CYAN    = (255, 255, 0)
+
+
+# =============================================================
+# SAHI UTILITIES
+# =============================================================
+def _make_slices(width, height, slice_w, slice_h, overlap):
+    stride_x = max(1, int(slice_w * (1 - overlap)))
+    stride_y = max(1, int(slice_h * (1 - overlap)))
+    xs = list(range(0, max(width  - slice_w, 0) + 1, stride_x))
+    ys = list(range(0, max(height - slice_h, 0) + 1, stride_y))
+    if not xs or xs[-1] != max(width  - slice_w, 0):
+        xs.append(max(width  - slice_w, 0))
+    if not ys or ys[-1] != max(height - slice_h, 0):
+        ys.append(max(height - slice_h, 0))
+    slices = []
+    for y1 in ys:
+        y2 = min(y1 + slice_h, height)
+        y1 = max(0, y2 - slice_h)
+        for x1 in xs:
+            x2 = min(x1 + slice_w, width)
+            x1 = max(0, x2 - slice_w)
+            slices.append((x1, y1, x2, y2))
+    return slices
+
+
+def _iou(a, b):
+    ix1 = max(a[0], b[0]); iy1 = max(a[1], b[1])
+    ix2 = min(a[2], b[2]); iy2 = min(a[3], b[3])
+    iw  = max(0.0, ix2 - ix1); ih = max(0.0, iy2 - iy1)
+    inter = iw * ih
+    if inter <= 0: return 0.0
+    area_a = max(0.0, a[2]-a[0]) * max(0.0, a[3]-a[1])
+    area_b = max(0.0, b[2]-b[0]) * max(0.0, b[3]-b[1])
+    union  = area_a + area_b - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _nms_merge(dets):
+    if not dets: return []
+    dets = sorted(dets, key=lambda d: d[1], reverse=True)
+    kept = []; used = [False] * len(dets)
+    for i, (box_i, _) in enumerate(dets):
+        if used[i]: continue
+        kept.append(dets[i])
+        for j in range(i+1, len(dets)):
+            if not used[j] and _iou(box_i, dets[j][0]) > SAHI_MERGE_IOU:
+                used[j] = True
+    return kept
+
+
+# =============================================================
+# DETECTION
+# =============================================================
+def run_full_detection(model, bgr):
+    h, w = bgr.shape[:2]
+    result = {
+        "frame_shape":           (w, h),
+        "sanity":                {"confs": [], "classes": []},
+        "left_pt":               None,
+        "right_pt":              None,
+        "left_conf":             0.0,
+        "right_conf":            0.0,
+        "total_slices":          0,
+        "total_raw_hits":        0,
+        "left_raw_dets":         0,
+        "right_raw_dets":        0,
+        "tier_that_fired_left":  None,
+        "tier_that_fired_right": None,
+        "inter_canthus_px":      None,
+        "vertical_offset_px":    None,
+        "ghost_detections":      [],
+    }
+
+    # Sanity: whole frame at very low conf
+    san = model(bgr, imgsz=IMG_SIZE, conf=SANITY_CONF, verbose=False)[0]
+    if san.boxes is not None and len(san.boxes) > 0:
+        san_confs = san.boxes.conf.cpu().numpy().tolist()
+        san_clss  = san.boxes.cls.cpu().numpy().astype(int).tolist()
+        result["sanity"]["confs"]   = [round(c, 3) for c in san_confs]
+        result["sanity"]["classes"] = san_clss
+        result["ghost_detections"]  = [
+            {"conf": round(c, 3), "cls": cl}
+            for c, cl in zip(san_confs, san_clss)
+            if c < CONF_THRESH
+        ]
+
+    left_dets      = []
+    right_dets     = []
+    left_tier_map  = []
+    right_tier_map = []
+
+    for tier_idx, (sw, sh, overlap, upscale) in enumerate(SAHI_CONFIGS):
+        slices = _make_slices(w, h, sw, sh, overlap)
+        result["total_slices"] += len(slices)
+
+        for (x1, y1, x2, y2) in slices:
+            patch = bgr[y1:y2, x1:x2]
+            if patch.size == 0: continue
+
+            patch_in = (cv2.resize(patch, None,
+                                   fx=upscale, fy=upscale,
+                                   interpolation=cv2.INTER_LANCZOS4)
+                        if upscale != 1.0 else patch)
+
+            res = model(patch_in, imgsz=IMG_SIZE,
+                        conf=CONF_THRESH, verbose=False)[0]
+            if res.boxes is None or len(res.boxes) == 0:
+                continue
+
+            boxes = res.boxes.xyxy.cpu().numpy()
+            clss  = res.boxes.cls.cpu().numpy().astype(int)
+            confs = res.boxes.conf.cpu().numpy()
+            result["total_raw_hits"] += len(boxes)
+
+            for box, cls_id, conf in zip(boxes, clss, confs):
+                full_box = (
+                    float(box[0] / upscale + x1),
+                    float(box[1] / upscale + y1),
+                    float(box[2] / upscale + x1),
+                    float(box[3] / upscale + y1),
+                )
+                if cls_id == 0:
+                    left_dets.append((full_box, float(conf)))
+                    left_tier_map.append(tier_idx)
+                elif cls_id == 1:
+                    right_dets.append((full_box, float(conf)))
+                    right_tier_map.append(tier_idx)
+
+    result["left_raw_dets"]  = len(left_dets)
+    result["right_raw_dets"] = len(right_dets)
+
+    left_dets  = _nms_merge(left_dets)
+    right_dets = _nms_merge(right_dets)
+
+    if left_dets:
+        bi = max(range(len(left_dets)), key=lambda i: left_dets[i][1])
+        (lx1, ly1, lx2, ly2), lc = left_dets[bi]
+        result["left_pt"]   = (round((lx1+lx2)/2, 1), round((ly1+ly2)/2, 1))
+        result["left_conf"] = round(lc, 3)
+        if left_tier_map:
+            result["tier_that_fired_left"] = left_tier_map[
+                min(bi, len(left_tier_map)-1)]
+
+    if right_dets:
+        bi = max(range(len(right_dets)), key=lambda i: right_dets[i][1])
+        (rx1, ry1, rx2, ry2), rc = right_dets[bi]
+        result["right_pt"]   = (round((rx1+rx2)/2, 1), round((ry1+ry2)/2, 1))
+        result["right_conf"] = round(rc, 3)
+        if right_tier_map:
+            result["tier_that_fired_right"] = right_tier_map[
+                min(bi, len(right_tier_map)-1)]
+
+    if result["left_pt"] and result["right_pt"]:
+        lx, ly = result["left_pt"]
+        rx, ry = result["right_pt"]
+        result["inter_canthus_px"]   = round(abs(rx - lx), 1)
+        result["vertical_offset_px"] = round(abs(ry - ly), 1)
+
+    return result
+
+
+# =============================================================
+# PASS / FAIL EVALUATOR
+# =============================================================
+def evaluate(scenario_id, samples):
+    if not samples:
+        return "FAIL", ["No samples captured"], ["Scenario skipped"]
+
+    notes  = []
+    issues = []
+    n      = len(samples)
+
+    left_confs  = [s["left_conf"]  for s in samples]
+    right_confs = [s["right_conf"] for s in samples]
+    left_det    = sum(1 for c in left_confs  if c > 0)
+    right_det   = sum(1 for c in right_confs if c > 0)
+    both_det    = sum(1 for s in samples
+                      if s["left_conf"] > 0 and s["right_conf"] > 0)
+    ghost_avg   = sum(len(s["ghost_detections"]) for s in samples) / n
+
+    avg_lc = sum(left_confs)  / n
+    avg_rc = sum(right_confs) / n
+
+    flat_san = [c for s in samples
+                for c in s["sanity"]["confs"] if c >= CONF_THRESH]
+    avg_san  = round(sum(flat_san)/len(flat_san), 3) if flat_san else 0.0
+
+    notes.append(f"Sanity avg conf: {avg_san}")
+    notes.append(f"Left  detected: {left_det}/{n}  avg_conf={avg_lc:.3f}")
+    notes.append(f"Right detected: {right_det}/{n}  avg_conf={avg_rc:.3f}")
+    notes.append(f"Both  detected: {both_det}/{n}")
+    notes.append(f"Ghost dets/frame: {ghost_avg:.1f}")
+
+    ic = [s["inter_canthus_px"] for s in samples if s["inter_canthus_px"]]
+    if ic:
+        notes.append(f"Inter-canthus px: min={min(ic):.1f} "
+                     f"max={max(ic):.1f} avg={sum(ic)/len(ic):.1f}")
+
+    tl = [s["tier_that_fired_left"]  for s in samples
+          if s["tier_that_fired_left"]  is not None]
+    tr = [s["tier_that_fired_right"] for s in samples
+          if s["tier_that_fired_right"] is not None]
+    if tl: notes.append(f"Tier -> left:  {tl}")
+    if tr: notes.append(f"Tier -> right: {tr}")
+
+    # Per-scenario gates
+    if scenario_id in ("A", "B", "C"):
+        req = {"A": (0.8, 0.50), "B": (0.6, 0.35), "C": (0.4, 0.22)}[scenario_id]
+        req_rate, req_conf = req
+        if both_det/n < req_rate:
+            issues.append(f"Both-canthus rate {both_det/n:.0%} < {req_rate:.0%}")
+        if avg_lc < req_conf:
+            issues.append(f"Left avg conf {avg_lc:.3f} < {req_conf}")
+        if avg_rc < req_conf:
+            issues.append(f"Right avg conf {avg_rc:.3f} < {req_conf}")
+
+    elif scenario_id in ("D", "H"):
+        any_rate = sum(1 for s in samples
+                       if s["left_conf"] > 0 or s["right_conf"] > 0) / n
+        if any_rate < 0.8:
+            issues.append(f"Any-canthus rate {any_rate:.0%} < 80%")
+
+    elif scenario_id == "E":
+        if left_det/n < 0.6:
+            issues.append(f"Left rate {left_det/n:.0%} < 60% on 60 deg turn")
+        if right_det/n > 0.3:
+            issues.append(f"Right still firing {right_det/n:.0%} on 60 deg turn — ghost")
+
+    elif scenario_id == "F":
+        if left_det/n < 0.8:
+            issues.append(f"Left rate {left_det/n:.0%} < 80% (right occluded)")
+        if right_det/n > 0.2:
+            issues.append(f"Right firing {right_det/n:.0%} when occluded — false positive")
+
+    elif scenario_id == "G":
+        if right_det/n < 0.8:
+            issues.append(f"Right rate {right_det/n:.0%} < 80% (left occluded)")
+        if left_det/n > 0.2:
+            issues.append(f"Left firing {left_det/n:.0%} when occluded — false positive")
+
+    if ghost_avg > 0.5:
+        issues.append(f"Ghost detections: {ghost_avg:.1f}/frame")
+
+    status = "PASS" if not issues else (
+        "WARN" if len(issues) == 1 else "FAIL")
+    return status, notes, issues
+
+
+# =============================================================
+# DISPLAY BUILDER
+# =============================================================
+def _puttext(img, text, pos, scale, color, thickness=1, bg=False):
+    if bg:
+        (tw, th), bl = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX,
+                                       scale, thickness)
+        x, y = pos
+        cv2.rectangle(img, (x-2, y-th-2), (x+tw+2, y+bl+2),
+                       (0, 0, 0), -1)
+    cv2.putText(img, text, pos, cv2.FONT_HERSHEY_SIMPLEX,
+                scale, color, thickness, cv2.LINE_AA)
+
+
+def build_display(bgr, det, scenario, sc_idx, total_sc,
+                  phase, countdown, sample_count, samples_needed,
+                  last_status_line=""):
+    # Scale up thermal frame for visibility
+    vis = cv2.resize(bgr, (bgr.shape[1]*2, bgr.shape[0]*2))
+    h, w = vis.shape[:2]
+
+    # Draw canthus detections
+    lpt = det["left_pt"]
+    rpt = det["right_pt"]
+    if lpt:
+        cx, cy = int(lpt[0]*2), int(lpt[1]*2)
+        cv2.circle(vis, (cx, cy), 12, COL_YELLOW, 2)
+        _puttext(vis, f"L {det['left_conf']:.2f}",
+                 (cx+10, cy-10), 0.55, COL_YELLOW, 2, bg=True)
+    if rpt:
+        cx, cy = int(rpt[0]*2), int(rpt[1]*2)
+        cv2.circle(vis, (cx, cy), 12, COL_CYAN, 2)
+        _puttext(vis, f"R {det['right_conf']:.2f}",
+                 (cx+10, cy-10), 0.55, COL_CYAN, 2, bg=True)
+    if lpt and rpt:
+        cv2.line(vis,
+                 (int(lpt[0]*2), int(lpt[1]*2)),
+                 (int(rpt[0]*2), int(rpt[1]*2)),
+                 COL_YELLOW, 1)
+
+    # Ghost indicator
+    ng = len(det["ghost_detections"])
+    if ng:
+        _puttext(vis, f"GHOSTS:{ng}",
+                 (10, h-10), 0.6, COL_RED, 2, bg=True)
+
+    # ---- Info panel ----
+    panel = np.zeros((200, w, 3), dtype=np.uint8)
+
+    # Scenario progress
+    prog = f"Scenario {sc_idx+1}/{total_sc}  [{scenario['id']}]"
+    _puttext(panel, prog, (10, 24), 0.65, COL_GREY, 1)
+
+    # Scenario label
+    _puttext(panel, scenario["label"], (10, 50), 0.60, COL_WHITE, 2)
+
+    # Instruction lines
+    _puttext(panel, scenario["instruction"], (10, 76), 0.55, COL_GREEN, 1)
+    _puttext(panel, scenario["line2"],       (10, 98), 0.55, COL_GREEN, 1)
+
+    # Phase banner
+    if phase == PHASE_PREPARE:
+        phase_col  = COL_ORANGE
+        phase_text = f"GET READY  —  capturing in {int(countdown)+1}s"
+    elif phase == PHASE_CAPTURE:
+        phase_col  = COL_GREEN
+        phase_text = (f"CAPTURING  {sample_count}/{samples_needed}  "
+                      f"—  {int(countdown)+1}s left")
+    elif phase == PHASE_RESULT:
+        phase_col  = COL_CYAN
+        phase_text = f"DONE  —  next scenario in {int(countdown)+1}s"
+    else:
+        phase_col  = COL_WHITE
+        phase_text = "COMPLETE"
+
+    # Big phase box
+    cv2.rectangle(panel, (8, 108), (w-8, 148), phase_col, 2)
+    _puttext(panel, phase_text, (16, 138), 0.65, phase_col, 2)
+
+    # Countdown bar
+    if phase in (PHASE_PREPARE, PHASE_CAPTURE):
+        total = PREPARE_SECS if phase == PHASE_PREPARE else CAPTURE_SECS
+        frac  = max(0.0, min(1.0, countdown / total))
+        bar_w = int((w - 20) * frac)
+        cv2.rectangle(panel, (10, 152), (w-10, 168), COL_GREY, 1)
+        cv2.rectangle(panel, (10, 152), (10+bar_w, 168), phase_col, -1)
+
+    # Live detection status
+    san_str = (f"Sanity: {det['sanity']['confs']}  cls:{det['sanity']['classes']}"
+               if det["sanity"]["confs"] else "Sanity: no hits")
+    _puttext(panel, san_str, (10, 185), 0.42, COL_GREY, 1)
+
+    if last_status_line:
+        _puttext(panel, last_status_line, (10, 198), 0.42, COL_CYAN, 1)
+
+    return np.vstack([vis, panel])
+
+
+def build_result_display(scenario, status, notes, issues, w):
+    h_panel = 320
+    panel   = np.zeros((h_panel, w, 3), dtype=np.uint8)
+
+    col = {
+        "PASS": COL_GREEN,
+        "WARN": COL_ORANGE,
+        "FAIL": COL_RED,
+    }.get(status, COL_WHITE)
+
+    marker = {"PASS": "PASS", "WARN": "WARN", "FAIL": "FAIL"}.get(status, "?")
+    cv2.rectangle(panel, (5, 5), (w-5, 50), col, 2)
+    _puttext(panel, f"  {marker} — Scenario {scenario['id']}: {scenario['label']}",
+             (10, 36), 0.60, col, 2)
+
+    y = 70
+    for note in notes[:6]:
+        _puttext(panel, note, (10, y), 0.42, COL_WHITE, 1)
+        y += 18
+
+    if issues:
+        y += 6
+        _puttext(panel, "ISSUES:", (10, y), 0.50, COL_RED, 2)
+        y += 20
+        for iss in issues[:4]:
+            _puttext(panel, f"  !! {iss}", (10, y), 0.44, COL_ORANGE, 1)
+            y += 18
+
+    return panel
+
+
+# =============================================================
+# CAMERA STATE
+# =============================================================
+linear_cal  = g.CameraLinearCal()
+last_status = [None]
+last_frame  = [None]
+
+def on_frame(frame):
+    last_frame[0] = frame
+    if last_status[0] is not None:
+        try:
+            linear_cal.fit(frame.y16, last_status[0])
+        except Exception:
+            pass
+
+
+def get_bgr():
+    """Grab current frame as BGR image."""
+    frozen = last_frame[0]
+    if frozen is None or not linear_cal.ready():
+        return None
+    palette = g.Palette.IronRed
+    opts    = g.PaletteOptions(auto_range=True)
+    rgb     = g.apply_palette(frozen.y16, palette, opts)
+    return cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+
+
+def refresh_cal():
+    try:
+        s = cam.serial().query_temp_status(retries=1, wait_seconds=0.5)
+        if s and last_frame[0] is not None:
+            last_status[0] = s
+            linear_cal.fit(last_frame[0].y16, s)
+    except Exception:
+        pass
+
+
+# =============================================================
+# MAIN
+# =============================================================
+cam = None   # set in main so refresh_cal can access it
+
+def main():
+    global cam
+    os.makedirs(SNAP_DIR, exist_ok=True)
+
+    weights_path = next(
+        (p for p in WEIGHTS_CANDIDATES if p.exists()), WEIGHTS_CANDIDATES[0])
+    print(f"Loading model: {weights_path}")
+    model = YOLO(str(weights_path))
+    print("Model loaded.")
+
+    cam = g.Camera(g.DeviceInfo(serial_port=SERIAL_PORT))
+    cam.configure_thermography(g.ThermographyConfig(emissivity=98))
+    cam.start(on_frame)
+    print("Camera started. Warming up 5s...")
+    time.sleep(5)
+
+    print("Calibrating...")
+    for _ in range(20):
+        try:
+            s = cam.serial().query_temp_status(retries=2, wait_seconds=1.5)
+            if s:
+                last_status[0] = s
+                if last_frame[0] is not None:
+                    linear_cal.fit(last_frame[0].y16, s)
+                print(f"  Calibrated — min:{s.min_c:.1f}  max:{s.max_c:.1f}")
+                break
+        except Exception:
+            pass
+        time.sleep(1)
+
+    if not linear_cal.ready():
+        print("Calibration failed — exiting.")
+        cam.stop()
+        sys.exit(1)
+
+    cv2.namedWindow("Thermal Diagnostic", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("Thermal Diagnostic", 800, 700)
+
+    all_results   = []
+    raw_json_data = {}
+    snap_count    = [0]
+
+    print("\n" + "="*55)
+    print("  AUTO DIAGNOSTIC STARTING")
+    print(f"  {len(SCENARIOS)} scenarios")
+    print(f"  {PREPARE_SECS}s prepare + {CAPTURE_SECS}s capture each")
+    print("="*55 + "\n")
+
+    for sc_idx, scenario in enumerate(SCENARIOS):
+        print(f"\n--- Scenario {sc_idx+1}/{len(SCENARIOS)}: "
+              f"{scenario['id']} — {scenario['label']}")
+        print(f"    {scenario['instruction']}")
+        print(f"    {scenario['line2']}")
+
+        samples          = []
+        last_status_line = ""
+        phase            = PHASE_PREPARE
+        phase_start      = time.time()
+        capture_interval = CAPTURE_SECS / SAMPLES_PER_SCENE
+
+        while phase != PHASE_DONE:
+            refresh_cal()
+            bgr = get_bgr()
+            if bgr is None:
+                time.sleep(0.05)
+                continue
+
+            det      = run_full_detection(model, bgr)
+            elapsed  = time.time() - phase_start
+            now      = time.time()
+
+            # ---- Phase transitions ----
+            if phase == PHASE_PREPARE:
+                remaining = PREPARE_SECS - elapsed
+                if remaining <= 0:
+                    phase       = PHASE_CAPTURE
+                    phase_start = time.time()
+                    last_capture_time = 0.0
+                    print(f"  >> CAPTURING...")
+
+            elif phase == PHASE_CAPTURE:
+                remaining = CAPTURE_SECS - elapsed
+
+                # Auto-capture at even intervals
+                time_since_last = elapsed - (len(samples) * capture_interval)
+                if (len(samples) < SAMPLES_PER_SCENE and
+                        time_since_last >= capture_interval):
+                    samples.append(det)
+                    snap_count[0] += 1
+                    snap_path = os.path.join(
+                        SNAP_DIR,
+                        f"diag_{scenario['id']}_s{len(samples):02d}.png")
+
+                    # Build and save annotated snapshot
+                    disp_snap = build_display(
+                        bgr, det, scenario, sc_idx, len(SCENARIOS),
+                        phase, remaining, len(samples),
+                        SAMPLES_PER_SCENE, last_status_line)
+                    cv2.imwrite(snap_path, disp_snap)
+
+                    last_status_line = (
+                        f"Sample {len(samples)}/{SAMPLES_PER_SCENE}  "
+                        f"LC:{det['left_conf']:.3f}  "
+                        f"RC:{det['right_conf']:.3f}  "
+                        f"ghosts:{len(det['ghost_detections'])}")
+                    print(f"  [sample {len(samples)}]  {last_status_line}")
+
+                if remaining <= 0 or len(samples) >= SAMPLES_PER_SCENE:
+                    # Evaluate
+                    status, notes, issues = evaluate(scenario["id"], samples)
+                    marker = {"PASS":"✓","WARN":"~","FAIL":"✗"}.get(status,"?")
+                    print(f"  [{marker}] {status}  issues={len(issues)}")
+                    for iss in issues:
+                        print(f"     !! {iss}")
+
+                    all_results.append(
+                        (scenario["id"], scenario["label"],
+                         samples, status, notes, issues))
+                    raw_json_data[scenario["id"]] = samples
+
+                    # Build result overlay
+                    bgr_disp = get_bgr() or bgr
+                    vis      = cv2.resize(bgr_disp,
+                                          (bgr_disp.shape[1]*2,
+                                           bgr_disp.shape[0]*2))
+                    w_vis    = vis.shape[1]
+                    res_panel = build_result_display(
+                        scenario, status, notes, issues, w_vis)
+                    result_display = np.vstack([vis, res_panel])
+                    cv2.imshow("Thermal Diagnostic", result_display)
+
+                    # Save result snapshot
+                    snap_count[0] += 1
+                    cv2.imwrite(os.path.join(
+                        SNAP_DIR,
+                        f"diag_{scenario['id']}_RESULT_{status}.png"),
+                        result_display)
+
+                    phase       = PHASE_RESULT
+                    phase_start = time.time()
+
+            elif phase == PHASE_RESULT:
+                remaining = RESULT_DISPLAY_SECS - elapsed
+                if remaining <= 0:
+                    phase = PHASE_DONE
+
+            # ---- Build live display (except during result hold) ----
+            if phase not in (PHASE_RESULT, PHASE_DONE):
+                remaining = max(0.0,
+                    (PREPARE_SECS if phase == PHASE_PREPARE
+                     else CAPTURE_SECS) - elapsed)
+                display = build_display(
+                    bgr, det, scenario, sc_idx, len(SCENARIOS),
+                    phase, remaining, len(samples),
+                    SAMPLES_PER_SCENE, last_status_line)
+                cv2.imshow("Thermal Diagnostic", display)
+
+            # Allow Q to abort
+            key = cv2.waitKey(30) & 0xFF
+            if key in (ord('q'), ord('Q'), 27):
+                print("\nAborted — saving partial results...")
+                write_report(all_results)
+                with open(JSON_PATH, "w") as f:
+                    json.dump(raw_json_data, f, indent=2)
+                cam.stop()
+                cv2.destroyAllWindows()
+                sys.exit(0)
+
+    # All scenarios done
+    write_report(all_results)
+    with open(JSON_PATH, "w") as f:
+        json.dump(raw_json_data, f, indent=2)
+    print(f"\nRaw JSON: {JSON_PATH}")
+    print(f"Snaps:    {SNAP_DIR}")
+
+    # Hold final report on screen for 8s
+    bgr_final = get_bgr()
+    if bgr_final is not None:
+        final_vis = cv2.resize(bgr_final,
+                               (bgr_final.shape[1]*2, bgr_final.shape[0]*2))
+        summary_panel = np.zeros((120, final_vis.shape[1], 3), dtype=np.uint8)
+        passed = sum(1 for *_, s, _, _ in all_results if s == "PASS")
+        warned = sum(1 for *_, s, _, _ in all_results if s == "WARN")
+        failed = sum(1 for *_, s, _, _ in all_results if s == "FAIL")
+        _puttext(summary_panel, "DIAGNOSTIC COMPLETE", (10, 35),
+                 0.9, COL_WHITE, 2)
+        _puttext(summary_panel,
+                 f"PASS:{passed}  WARN:{warned}  FAIL:{failed}  "
+                 f"(see ~/diagnostic_report.txt)",
+                 (10, 70), 0.55, COL_CYAN, 1)
+        _puttext(summary_panel, "Press Q to exit",
+                 (10, 100), 0.50, COL_GREY, 1)
+        final_display = np.vstack([final_vis, summary_panel])
+        cv2.imshow("Thermal Diagnostic", final_display)
+        cv2.waitKey(8000)
+
+    cam.stop()
+    cv2.destroyAllWindows()
+    print("Done.")
+
+
+# =============================================================
+# REPORT WRITER
+# =============================================================
+def write_report(all_results):
+    lines = []
+    lines.append("=" * 65)
+    lines.append("  THERMAL CANTHUS DIAGNOSTIC REPORT")
+    lines.append(f"  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    lines.append("=" * 65)
+    lines.append("")
+
+    n_pass = n_warn = n_fail = 0
+    for sc_id, sc_label, samples, status, notes, issues in all_results:
+        m = {"PASS": "PASS", "WARN": "WARN", "FAIL": "FAIL"}.get(status, "?")
+        lines.append(f"[{m}] Scenario {sc_id} — {sc_label}")
+        lines.append(f"      Samples captured: {len(samples)}")
+        for note in notes:
+            lines.append(f"      {note}")
+        if issues:
+            lines.append("      ISSUES:")
+            for iss in issues:
+                lines.append(f"        !! {iss}")
+        lines.append("")
+        lines.append("-" * 65)
+        lines.append("")
+        if status == "PASS":   n_pass += 1
+        elif status == "WARN": n_warn += 1
+        else:                  n_fail += 1
+
+    lines.append(f"SUMMARY:  PASS={n_pass}  WARN={n_warn}  FAIL={n_fail}")
+    lines.append("")
+    lines.append("LAYER DIAGNOSIS")
+    lines.append("")
+
+    all_issues_str = " ".join(
+        iss for *_, _, issues in all_results for iss in issues).lower()
+
+    def layer(name, failed, action):
+        if failed:
+            lines.append(f"  !! {name}:  PROBLEM")
+            lines.append(f"     {action}")
+        else:
+            lines.append(f"  OK {name}")
+        lines.append("")
+
+    layer("Layer 1 — Model weights",
+          any(sc == "A" and st == "FAIL"
+              for sc, _, _, st, _, _ in all_results),
+          "Failing at arm's length = weak model. Check weights or retrain.")
+
+    layer("Layer 2 — SAHI tile geometry / distance",
+          any(sc == "C" and st == "FAIL"
+              for sc, _, _, st, _, _ in all_results),
+          "Failing at 3m = tiles too large. Add smaller tier, raise upscale.")
+
+    layer("Layer 3 — Post-processing (symmetry / single-canthus)",
+          any(sc in ("D","E","F","G") and st == "FAIL"
+              for sc, _, _, st, _, _ in all_results),
+          "Failing on turns/occlusion. Fix symmetry fallback logic.")
+
+    layer("Layer 4 — Ghost / false-positive detections",
+          "ghost" in all_issues_str or "false positive" in all_issues_str,
+          "Add hard conf floor in NMS, tighten IoU threshold.")
+
+    layer("Layer 5 — Distance + angle combined (hardest case)",
+          any(sc == "H" and st == "FAIL"
+              for sc, _, _, st, _, _ in all_results),
+          "Failing at 3m + turn = needs Layer 2 AND Layer 3 fixes both.")
+
+    lines.append("=" * 65)
+    report = "\n".join(lines)
+
+    with open(REPORT_PATH, "w") as f:
+        f.write(report)
+    print("\n" + report)
+    print(f"\nReport: {REPORT_PATH}")
+
+
+if __name__ == "__main__":
+    main()
